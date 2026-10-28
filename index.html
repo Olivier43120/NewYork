@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Album de voyage</title>
+<title>Album de voyage : New York</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -114,9 +114,9 @@ const dash=pts=>L.polyline(pts,{color:'#fff',weight:2.5,dashArray:'7 8',opacity:
 // Trajets : trait droit en dessous de FLIGHT_KM, sinon arc courbe + avions régulièrement espacés
 const FLIGHT_KM=500,PLANE_EVERY=1800,PM=L.Projection.SphericalMercator;
 const PLANE='<svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M12 2c.8 0 1.5.7 1.5 1.5V9l8 5v2l-8-2.5V19l2 1.5V22l-3.5-1L8.5 22v-1.5l2-1.5v-5.5L2.5 16v-2l8-5V3.5C10.5 2.7 11.2 2 12 2z"/></svg>';
-function route(pts){const out=[];
+function route(pts,modes){const out=[];
  for(let i=1;i<pts.length;i++){const a=pts[i-1],b=[pts[i][0],pts[i][1]],d=km(a,b);
-  if(d<FLIGHT_KM){dash([a,b]).addTo(G);out.push(a,b);continue}
+  const mo=modes&&modes[i];if(mo==='straight'||(mo!=='flight'&&d<FLIGHT_KM)){dash([a,b]).addTo(G);out.push(a,b);continue}
   if(Math.abs(b[1]-a[1])>180)b[1]+=b[1]<a[1]?360:-360;
   const P0=PM.project(L.latLng(a)),P1=PM.project(L.latLng(b)),dx=P1.x-P0.x,dy=P1.y-P0.y;
   let nx=-dy,ny=dx;if(ny<0){nx=-nx;ny=-ny}
@@ -149,8 +149,8 @@ function init(m){
  setActive(0,false);
 }
 function homeMap(fit){
- G.clearLayers();const pts=steps.map(s=>s.loc).filter(Boolean);
- route(pts);
+ G.clearLayers();const vs=steps.filter(s=>s.loc),pts=vs.map(s=>s.loc);
+ route(pts,vs.map(s=>s.mode));
  steps.forEach((s,i)=>{if(!s.loc)return;pin(s.photos[0],i===cur?'on':'sm').on('click',()=>openStep(i)).addTo(G)});
  const s=steps[cur];if(fit&&s.loc)M.flyTo(s.loc,10,{duration:1.2});
 }
@@ -162,8 +162,8 @@ function setActive(i,scroll){cur=i;
 }
 function openStep(i,j=0){cur=i;view={i,j};document.body.classList.add('inview');$('#viewer').classList.add('on');
  const s=steps[i];$('#prog').innerHTML=s.photos.map(()=>'<i></i>').join('');
- G.clearLayers();const pts=s.photos.filter(loc).map(loc);
- const rp=route(pts);
+ G.clearLayers();const gp=s.photos.filter(loc),pts=gp.map(loc);
+ const rp=route(pts,gp.map(p=>p.mode||s.mode));
  s.photos.forEach((p,k)=>{if(loc(p))pin(p,'sm').on('click',e=>{L.DomEvent.stop(e);show(k)}).addTo(G)});
  setTimeout(()=>{M.invalidateSize();if(pts.length)M.fitBounds(L.latLngBounds(pts.concat(rp)),{...pad(),maxZoom:17,duration:1})},60);
  show(j,true);
