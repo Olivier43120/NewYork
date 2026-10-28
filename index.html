@@ -18,6 +18,7 @@ html,body{height:100%;background:var(--night);color:var(--ink);font-family:Outfi
 .pin{width:48px;height:48px;border-radius:50%;border:3px solid #fff;overflow:hidden;background:#345;box-shadow:0 2px 8px #0008;transition:transform .25s}
 .pin img{width:100%;height:100%;object-fit:cover;display:block}
 .pin.on{transform:scale(1.25);border-color:var(--blue);box-shadow:0 0 0 6px #3d95e655,0 2px 10px #000a}
+.plane{filter:drop-shadow(0 1px 3px #000c)}.plane div{width:26px;height:26px}.plane svg{display:block}
 .pin.sm{width:38px;height:38px;border-width:2px}
 /* en-tête & boutons */
 #top{position:fixed;top:max(14px,env(safe-area-inset-top));left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;padding:0 16px;pointer-events:none;z-index:500}
@@ -110,6 +111,24 @@ const pad=()=>{const h=innerHeight;
 const pin=(p,c)=>L.marker(loc(p),{icon:L.divIcon({className:'',iconSize:[48,48],html:`<div class="pin ${c}"><img src="${p.src}" alt=""></div>`})});
 const dash=pts=>L.polyline(pts,{color:'#fff',weight:2.5,dashArray:'7 8',opacity:.9});
 
+// Trajets : trait droit en dessous de FLIGHT_KM, sinon arc courbe + avions régulièrement espacés
+const FLIGHT_KM=500,PLANE_EVERY=1800,PM=L.Projection.SphericalMercator;
+const PLANE='<svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M12 2c.8 0 1.5.7 1.5 1.5V9l8 5v2l-8-2.5V19l2 1.5V22l-3.5-1L8.5 22v-1.5l2-1.5v-5.5L2.5 16v-2l8-5V3.5C10.5 2.7 11.2 2 12 2z"/></svg>';
+function route(pts){const out=[];
+ for(let i=1;i<pts.length;i++){const a=pts[i-1],b=[pts[i][0],pts[i][1]],d=km(a,b);
+  if(d<FLIGHT_KM){dash([a,b]).addTo(G);out.push(a,b);continue}
+  if(Math.abs(b[1]-a[1])>180)b[1]+=b[1]<a[1]?360:-360;
+  const P0=PM.project(L.latLng(a)),P1=PM.project(L.latLng(b)),dx=P1.x-P0.x,dy=P1.y-P0.y;
+  let nx=-dy,ny=dx;if(ny<0){nx=-nx;ny=-ny}
+  const C={x:(P0.x+P1.x)/2+nx*.28,y:(P0.y+P1.y)/2+ny*.28};
+  const at=t=>L.point((1-t)**2*P0.x+2*(1-t)*t*C.x+t*t*P1.x,(1-t)**2*P0.y+2*(1-t)*t*C.y+t*t*P1.y);
+  const arc=[];for(let k=0;k<=48;k++)arc.push(PM.unproject(at(k/48)));
+  dash(arc).addTo(G);out.push(...arc);
+  const n=Math.max(1,Math.round(d/PLANE_EVERY));
+  for(let k=0;k<n;k++){const t=(k+.5)/n,A=at(Math.max(0,t-.01)),B=at(Math.min(1,t+.01)),rot=90-Math.atan2(B.y-A.y,B.x-A.x)*180/Math.PI;
+   L.marker(PM.unproject(at(t)),{interactive:false,keyboard:false,zIndexOffset:-500,icon:L.divIcon({className:'plane',iconSize:[26,26],iconAnchor:[13,13],html:`<div style="transform:rotate(${rot}deg)">${PLANE}</div>`})}).addTo(G)}
+ }return out}
+
 fetch('manifest.json').then(r=>r.json()).then(init).catch(()=>{$('#place').textContent='manifest.json introuvable'});
 
 function init(m){
@@ -131,7 +150,7 @@ function init(m){
 }
 function homeMap(fit){
  G.clearLayers();const pts=steps.map(s=>s.loc).filter(Boolean);
- if(pts.length>1)dash(pts).addTo(G);
+ route(pts);
  steps.forEach((s,i)=>{if(!s.loc)return;pin(s.photos[0],i===cur?'on':'sm').on('click',()=>openStep(i)).addTo(G)});
  const s=steps[cur];if(fit&&s.loc)M.flyTo(s.loc,10,{duration:1.2});
 }
@@ -144,9 +163,9 @@ function setActive(i,scroll){cur=i;
 function openStep(i,j=0){cur=i;view={i,j};document.body.classList.add('inview');$('#viewer').classList.add('on');
  const s=steps[i];$('#prog').innerHTML=s.photos.map(()=>'<i></i>').join('');
  G.clearLayers();const pts=s.photos.filter(loc).map(loc);
- if(pts.length>1)dash(pts).addTo(G);
+ const rp=route(pts);
  s.photos.forEach((p,k)=>{if(loc(p))pin(p,'sm').on('click',e=>{L.DomEvent.stop(e);show(k)}).addTo(G)});
- setTimeout(()=>{M.invalidateSize();if(pts.length)M.fitBounds(L.latLngBounds(pts),{...pad(),maxZoom:17,duration:1})},60);
+ setTimeout(()=>{M.invalidateSize();if(pts.length)M.fitBounds(L.latLngBounds(pts.concat(rp)),{...pad(),maxZoom:17,duration:1})},60);
  show(j,true);
 }
 function show(j,first){
