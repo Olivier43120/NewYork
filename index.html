@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Album de voyage</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--night:#0a1a2b;--btn:#143042;--blue:#3d95e6;--ink:#fff;--mut:#b9c4cf;--side:440px}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:var(--night);color:var(--ink);font-family:Outfit,system-ui,sans-serif;overflow:hidden}
+#map{position:fixed;inset:0;background:var(--night)}
+.leaflet-container{background:var(--night);font-family:inherit}
+.leaflet-control-attribution{background:rgba(0,0,0,.35)!important;color:#aab!important;font-size:9px}
+.leaflet-control-attribution a{color:#ccd!important}
+/* pastilles photo */
+.pin{width:48px;height:48px;border-radius:50%;border:3px solid #fff;overflow:hidden;background:#345;box-shadow:0 2px 8px #0008;transition:transform .25s}
+.pin img{width:100%;height:100%;object-fit:cover;display:block}
+.pin.on{transform:scale(1.25);border-color:var(--blue);box-shadow:0 0 0 6px #3d95e655,0 2px 10px #000a}
+.pin.sm{width:38px;height:38px;border-width:2px}
+/* en-tête & boutons */
+#top{position:fixed;top:max(14px,env(safe-area-inset-top));left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;padding:0 16px;pointer-events:none;z-index:500}
+#top>*{pointer-events:auto}
+.rb{width:46px;height:46px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--btn);color:#fff;cursor:pointer;font-size:20px;box-shadow:0 2px 10px #0006}
+#back{background:#fff;color:var(--night);visibility:hidden}
+body.inview #back{visibility:visible}
+#ttl{text-align:center;text-shadow:0 1px 8px #000}
+#ttl small{display:block;font-size:13px;font-weight:500;opacity:.9}
+#ttl b{font-size:24px;font-weight:600}
+/* rail de steps */
+#rail{position:fixed;left:0;right:0;bottom:calc(76px + env(safe-area-inset-bottom));height:200px;display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 calc(50% - 130px);z-index:500;scrollbar-width:none}
+#rail::-webkit-scrollbar{display:none}
+.card{position:relative;flex:0 0 260px;border-radius:30px;overflow:hidden;scroll-snap-align:center;cursor:pointer;background:#234;border:2px solid transparent;transition:border-color .2s}
+.card.on{border-color:#ffffff66}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card i{position:absolute;inset:0;background:linear-gradient(transparent 40%,#000b)}
+.card div{position:absolute;left:18px;right:18px;bottom:14px}
+.card b{display:block;font-size:21px;font-weight:600;line-height:1.15}
+.card small{color:var(--mut);font-size:14px}
+#tabs{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));background:#06121f;border-radius:16px;padding:5px;display:flex;z-index:500}
+#tabs span{padding:12px 24px;border-radius:12px;font-weight:500;color:var(--mut)}
+#tabs .a{background:#f2f5f8;color:var(--night)}
+body.inview #rail,body.inview #tabs{display:none}
+/* visionneuse */
+#viewer{position:fixed;left:0;right:0;bottom:0;top:240px;border-radius:30px 30px 0 0;overflow:hidden;background:#000;z-index:600;transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1);touch-action:pan-y;user-select:none}
+#viewer.on{transform:none}
+#viewer>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none}
+#shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(#0008,transparent 18%,transparent 55%,#000d)}
+#prog{position:absolute;top:14px;left:18px;right:18px;display:flex;gap:8px;z-index:2}
+#prog i{flex:1;height:3px;border-radius:3px;background:#fff5;overflow:hidden}
+#prog i.d:after,#prog i.c:after{content:"";display:block;height:100%;background:#fff}
+#prog i.c:after{width:45%}
+#cap{position:absolute;left:24px;right:24px;bottom:calc(30px + env(safe-area-inset-bottom));pointer-events:none}
+#cap h2{font-size:30px;font-weight:600;line-height:1.1;text-shadow:0 2px 12px #000}
+#cap p.m{margin:12px 0;font-size:15px;font-weight:500}
+#cap p.d{color:#e4e9ee;font-size:18px;line-height:1.6;max-width:60ch;padding-bottom:64px}
+#act{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));display:flex;gap:22px;align-items:center;background:#555d;backdrop-filter:blur(14px);padding:12px 24px;border-radius:30px;z-index:3;font-size:20px}
+#act button{background:none;border:0;color:#fff;font:inherit;cursor:pointer}
+/* barre latérale (ordinateur) */
+#side{display:none}
+@media(min-width:900px){
+ #map{left:var(--side)}
+ #side{display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;width:var(--side);background:#0c2033;z-index:550;padding:26px 22px 0;overflow:hidden}
+ #side h1{font-size:30px;font-weight:700}
+ #side .by{color:var(--mut);margin:2px 0 18px}
+ #stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+ #stats div{background:var(--btn);border-radius:16px;padding:12px 6px;text-align:center}
+ #stats b{display:block;font-size:22px}#stats small{color:var(--mut);font-size:12px}
+ #list{flex:1;overflow-y:auto;margin:0 -22px;padding:0 22px 22px;scrollbar-width:thin}
+ .row{display:flex;gap:14px;align-items:center;padding:10px;border-radius:18px;cursor:pointer}
+ .row:hover,.row.on{background:var(--btn)}
+ .row img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #fff}
+ .row b{display:block;font-weight:600}.row small{color:var(--mut)}
+ #top{left:var(--side);width:calc(100% - var(--side))}
+ #ttl{visibility:hidden}
+ #viewer{top:0;bottom:0;right:auto;width:var(--side);border-radius:0}
+ body.inview #side{visibility:hidden}
+ #rail{left:var(--side);padding:0 calc(50% - 130px - var(--side)/2)}
+ #tabs{left:calc(50% + var(--side)/2)}
+ body.inview #map{left:var(--side)}
+ #viewer{transform:translateX(-105%)}#viewer.on{transform:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<aside id="side"><h1 id="h1"></h1><div class="by" id="by"></div><div id="stats"></div><div id="list"></div></aside>
+<header id="top">
+ <button class="rb" id="back" aria-label="Retour">&#8249;</button>
+ <div id="ttl"><small id="who"></small><b id="place"></b></div>
+ <button class="rb" id="lay" aria-label="Changer de fond de carte">&#9776;</button>
+</header>
+<section id="rail"></section>
+<nav id="tabs"><span>Planifier</span><span class="a">Suivre</span></nav>
+<section id="viewer">
+ <img id="ph" alt="" draggable="false"><div id="shade"></div><div id="prog"></div>
+ <div id="cap"><h2 id="t"></h2><p class="m" id="m"></p><p class="d" id="d"></p></div>
+ <div id="act"><button id="prev">&#8249;</button><span id="cnt"></span><button id="next">&#8250;</button></div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const $=s=>document.querySelector(s), DESK=matchMedia('(min-width:900px)');
+const SAT=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Imagery &copy; Esri'});
+const PLAN=L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'&copy; OSM &copy; CARTO'});
+const M=L.map('map',{zoomControl:false,center:[30,0],zoom:2,layers:[SAT]}), G=L.layerGroup().addTo(M);
+let steps=[],cur=0,view=null,sat=true;
+const fmt=d=>d?new Date(d).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}):'';
+const loc=p=>p.lat!=null?[p.lat,p.lng]:null;
+const km=(a,b)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(b[0]-a[0])/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(r(b[1]-a[1])/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+const pad=()=>{const h=innerHeight;
+ if(view)return DESK.matches?{paddingTopLeft:[60,90],paddingBottomRight:[60,60]}:{paddingTopLeft:[50,90],paddingBottomRight:[50,h-240+20]};
+ return {paddingTopLeft:[60,100],paddingBottomRight:[60,DESK.matches?310:300]}};
+const pin=(p,c)=>L.marker(loc(p),{icon:L.divIcon({className:'',iconSize:[48,48],html:`<div class="pin ${c}"><img src="${p.src}" alt=""></div>`})});
+const dash=pts=>L.polyline(pts,{color:'#fff',weight:2.5,dashArray:'7 8',opacity:.9});
+
+fetch('manifest.json').then(r=>r.json()).then(init).catch(()=>{$('#place').textContent='manifest.json introuvable'});
+
+function init(m){
+ steps=m.steps.filter(s=>s.photos.length);
+ steps.forEach(s=>{let last=s.photos.find(loc);s.photos.forEach(p=>{if(p.lat==null&&last)[p.lat,p.lng]=last;else if(p.lat!=null)last=[p.lat,p.lng]});s.loc=s.photos.find(loc)&&loc(s.photos.find(loc))});
+ document.title=m.title||'Album';$('#h1').textContent=$('#place').textContent=m.title||'Mon voyage';
+ $('#by').textContent=m.author||'';$('#who').textContent=m.author||'';
+ // statistiques
+ const all=steps.flatMap(s=>s.photos),pts=all.filter(loc).map(loc);let d=0;for(let i=1;i<pts.length;i++)d+=km(pts[i-1],pts[i]);
+ const days=new Set(all.map(p=>(p.date||'').slice(0,10)).filter(Boolean)).size;
+ $('#stats').innerHTML=[[steps.length,'steps'],[all.length,'photos'],[Math.round(d).toLocaleString('fr-FR'),'km'],[days||'–','jours']].map(([a,b])=>`<div><b>${a}</b><small>${b}</small></div>`).join('');
+ $('#list').innerHTML=steps.map((s,i)=>`<div class="row" data-i="${i}"><img src="${s.photos[0].src}" alt=""><div><b>${s.name}</b><small>${fmt(s.photos[0].date)} · ${s.photos.length} photos</small></div></div>`).join('');
+ $('#rail').innerHTML=steps.map((s,i)=>`<article class="card" data-i="${i}"><img src="${s.photos[0].src}" alt="" loading="lazy"><i></i><div><b>${s.name}</b><small>${fmt(s.photos[0].date)} · ${s.photos.length} photos</small></div></article>`).join('');
+ $('#list').onclick=e=>{const r=e.target.closest('.row');if(r)openStep(+r.dataset.i)};
+ $('#rail').onclick=e=>{const c=e.target.closest('.card');if(c)openStep(+c.dataset.i)};
+ let t;$('#rail').onscroll=()=>{clearTimeout(t);t=setTimeout(()=>{const r=$('#rail').getBoundingClientRect(),mid=r.left+r.width/2;let b=0,bd=1e9;
+  document.querySelectorAll('.card').forEach((c,i)=>{const q=c.getBoundingClientRect(),dd=Math.abs(q.left+q.width/2-mid);if(dd<bd){bd=dd;b=i}});if(b!==cur)setActive(b,false)},90)};
+ setActive(0,false);
+}
+function homeMap(fit){
+ G.clearLayers();const pts=steps.map(s=>s.loc).filter(Boolean);
+ if(pts.length>1)dash(pts).addTo(G);
+ steps.forEach((s,i)=>{if(!s.loc)return;pin(s.photos[0],i===cur?'on':'sm').on('click',()=>openStep(i)).addTo(G)});
+ const s=steps[cur];if(fit&&s.loc)M.flyTo(s.loc,10,{duration:1.2});
+}
+function setActive(i,scroll){cur=i;
+ document.querySelectorAll('.card,.row').forEach(e=>e.classList.toggle('on',+e.dataset.i===i));
+ $('#place').textContent=steps[i].name;
+ if(scroll)document.querySelector(`.card[data-i="${i}"]`).scrollIntoView({inline:'center',behavior:'smooth',block:'nearest'});
+ homeMap(true);
+}
+function openStep(i,j=0){cur=i;view={i,j};document.body.classList.add('inview');$('#viewer').classList.add('on');
+ const s=steps[i];$('#prog').innerHTML=s.photos.map(()=>'<i></i>').join('');
+ G.clearLayers();const pts=s.photos.filter(loc).map(loc);
+ if(pts.length>1)dash(pts).addTo(G);
+ s.photos.forEach((p,k)=>{if(loc(p))pin(p,'sm').on('click',e=>{L.DomEvent.stop(e);show(k)}).addTo(G)});
+ setTimeout(()=>{M.invalidateSize();if(pts.length)M.fitBounds(L.latLngBounds(pts),{...pad(),maxZoom:17,duration:1})},60);
+ show(j,true);
+}
+function show(j,first){
+ const s=steps[view.i];
+ if(j>=s.photos.length){return view.i<steps.length-1?openStep(view.i+1):closeView()}
+ j=Math.max(0,j);view.j=j;const p=s.photos[j];
+ $('#ph').src=p.src;$('#t').textContent=s.name;
+ $('#m').textContent=[fmt(p.date),p.lat==null?'':p.lat.toFixed(3)+'°, '+p.lng.toFixed(3)+'°'].filter(Boolean).join('  ·  ');
+ $('#d').textContent=j===0?(s.desc||''):'';
+ $('#cnt').textContent=(j+1)+' / '+s.photos.length;
+ [...$('#prog').children].forEach((e,k)=>e.className=k<j?'d':k===j?'c':'');
+ G.eachLayer(l=>{if(l.getElement){const el=l.getElement().firstChild;el&&el.classList.toggle('on',l.getLatLng().equals(loc(p)))}});
+ if(!first&&loc(p))M.fitBounds(L.latLngBounds([loc(p),loc(p)]),{...pad(),maxZoom:Math.max(M.getZoom(),15),duration:.8});
+}
+function closeView(){view=null;document.body.classList.remove('inview');$('#viewer').classList.remove('on');setTimeout(()=>{M.invalidateSize();homeMap(true)},300)}
+$('#back').onclick=closeView;
+$('#prev').onclick=e=>{e.stopPropagation();view&&show(view.j-1)};
+$('#next').onclick=e=>{e.stopPropagation();view&&show(view.j+1)};
+$('#lay').onclick=()=>{sat=!sat;M.removeLayer(sat?PLAN:SAT);M.addLayer(sat?SAT:PLAN)};
+addEventListener('keydown',e=>{if(!view)return;if(e.key==='ArrowRight')show(view.j+1);if(e.key==='ArrowLeft')show(view.j-1);if(e.key==='Escape')closeView()});
+// glisser latéral + tape sur les bords
+let x0=null;const V=$('#viewer');
+V.addEventListener('pointerdown',e=>{if(e.target.closest('#act'))return;x0=e.clientX});
+V.addEventListener('pointerup',e=>{if(x0===null||!view)return;const dx=e.clientX-x0,w=V.clientWidth;x0=null;
+ if(dx<-50)show(view.j+1);else if(dx>50)show(view.j-1);else if(Math.abs(dx)<10)show(e.clientX-V.getBoundingClientRect().left<w*.3?view.j-1:view.j+1)});
+</script>
+</body>
+</html>
