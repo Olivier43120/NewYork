@@ -9,16 +9,20 @@ const dirs = fs.readdirSync(root, { withFileTypes: true })
 const steps = [];
 for (const d of dirs) {
   const files = fs.readdirSync(path.join(root, d)).sort(nat);
-  const txt = files.find(f => /\.txt$/i.test(f));
+  const base = f => f.replace(/\.[^.]+$/, '').toLowerCase();
+  const imgBases = new Set(files.filter(isImg).map(base));
+  const txt = files.find(f => /\.txt$/i.test(f) && !imgBases.has(base(f)));
   const lines = txt ? fs.readFileSync(path.join(root, d, txt), 'utf8').split(/\r?\n/) : [];
   const name = (lines.find(l => l.trim()) || d).trim();
   const desc = lines.slice(lines.findIndex(l => l.trim()) + 1).join('\n').trim();
   const photos = [];
   for (const f of files.filter(isImg)) {
     const p = path.join(root, d, f);
+    const tf = files.find(t => /\.txt$/i.test(t) && base(t) === base(f));
+    const text = tf ? fs.readFileSync(path.join(root, d, tf), 'utf8').trim() : '';
     const g = await exifr.gps(p).catch(() => null);
     const m = await exifr.parse(p, ['DateTimeOriginal']).catch(() => null);
-    photos.push({ src: `${d}/${f}`, lat: g?.latitude ?? null, lng: g?.longitude ?? null,
+    photos.push({ src: `${d}/${f}`, text, lat: g?.latitude ?? null, lng: g?.longitude ?? null,
       date: m?.DateTimeOriginal ? new Date(m.DateTimeOriginal).toISOString() : null });
   }
   steps.push({ id: d, name, desc, photos });
