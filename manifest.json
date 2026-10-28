@@ -6,7 +6,20 @@
    "id": "Step1",
    "name": "Ballade à Central Park",
    "desc": "",
-   "photos": []
+   "photos": [
+    {
+     "src": "Step1/img001.jpg",
+     "lat": 40.77236944444444,
+     "lng": -73.97196111111111,
+     "date": "2026-10-24T14:46:27.000Z"
+    },
+    {
+     "src": "Step1/img002.JPG",
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-24T11:25:25.000Z"
+    }
+   ]
   }
  ]
 }
