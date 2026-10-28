@@ -1,5 +1,12 @@
 {
  "title": "New York",
  "author": "Olivier SOLEILLANT",
- "steps": []
+ "steps": [
+  {
+   "id": "Step1",
+   "name": "Ballade à Central Park",
+   "desc": "",
+   "photos": []
+  }
+ ]
 }
