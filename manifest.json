@@ -6,10 +6,12 @@
    "id": "Step1",
    "name": "Ballade à Central Park",
    "desc": "",
+   "mode": null,
    "photos": [
     {
      "src": "Step1/img001.jpg",
      "text": "Première **tentative**",
+     "mode": null,
      "lat": 40.77236944444444,
      "lng": -73.97196111111111,
      "date": "2026-10-24T14:46:27.000Z"
@@ -17,6 +19,7 @@
     {
      "src": "Step1/img002.JPG",
      "text": "",
+     "mode": null,
      "lat": null,
      "lng": null,
      "date": "2026-10-24T11:25:25.000Z"
@@ -27,10 +30,12 @@
    "id": "Step2",
    "name": "Visite du Summit",
    "desc": "",
+   "mode": null,
    "photos": [
     {
      "src": "Step2/img003.jpg",
      "text": "",
+     "mode": null,
      "lat": 40.752627777777775,
      "lng": -73.9787,
      "date": "2026-10-26T08:56:35.000Z"
@@ -38,6 +43,7 @@
     {
      "src": "Step2/img004.jpg",
      "text": "",
+     "mode": null,
      "lat": 40.753613888888886,
      "lng": -73.97865277777778,
      "date": "2026-10-26T09:17:01.000Z"
@@ -45,6 +51,7 @@
     {
      "src": "Step2/img005.jpg",
      "text": "",
+     "mode": null,
      "lat": 40.753055555555555,
      "lng": -73.97853888888889,
      "date": "2026-10-26T09:45:37.000Z"
