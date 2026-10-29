@@ -12,6 +12,7 @@
    "photos": [
     {
      "src": "Step1/img001.jpg",
+     "type": "image",
      "thumb": "thumbs/Step1/img001.jpg",
      "text": "Première **tentative**",
      "mode": null,
@@ -21,6 +22,7 @@
     },
     {
      "src": "Step1/img002.JPG",
+     "type": "image",
      "thumb": "thumbs/Step1/img002.jpg",
      "text": "",
      "mode": null,
@@ -38,6 +40,7 @@
    "photos": [
     {
      "src": "Step2/img003.jpg",
+     "type": "image",
      "thumb": "thumbs/Step2/img003.jpg",
      "text": "",
      "mode": null,
@@ -47,6 +50,7 @@
     },
     {
      "src": "Step2/img004.jpg",
+     "type": "image",
      "thumb": "thumbs/Step2/img004.jpg",
      "text": "",
      "mode": null,
@@ -56,6 +60,7 @@
     },
     {
      "src": "Step2/img005.jpg",
+     "type": "image",
      "thumb": "thumbs/Step2/img005.jpg",
      "text": "",
      "mode": null,
