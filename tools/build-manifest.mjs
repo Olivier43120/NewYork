@@ -1,5 +1,7 @@
-// Parcourt Step1, Step2... et écrit manifest.json (nom, texte, mode de trajet, photos, GPS, date)
+// Parcourt Step1, Step2... : écrit manifest.json (textes, trajets, GPS, dates, page de garde)
+// et génère des miniatures dans thumbs/ (si "sharp" est installé).
 import fs from 'fs'; import path from 'path'; import exifr from 'exifr';
+let sharp = null; try { sharp = (await import('sharp')).default; } catch { console.warn('sharp absent : pas de miniatures'); }
 const root = process.argv[2] || '.';
 const nat = (a, b) => a.localeCompare(b, undefined, { numeric: true });
 const isImg = f => /\.(jpe?g|png|webp|heic)$/i.test(f);
@@ -17,7 +19,22 @@ function parse(raw) {
   });
   return { mode, text: kept.join('\n').trim() };
 }
+// Miniature 480 px max, stockée dans thumbs/<même chemin>.jpg (créée une seule fois)
+async function mkThumb(rel) {
+  if (!sharp) return null;
+  const out = rel.replace(/\.[^.]+$/, '.jpg'), dst = path.join(root, 'thumbs', out);
+  try {
+    if (!fs.existsSync(dst)) {
+      fs.mkdirSync(path.dirname(dst), { recursive: true });
+      await sharp(path.join(root, rel)).rotate().resize({ width: 480, height: 480, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 72 }).toFile(dst);
+    }
+    return 'thumbs/' + out;
+  } catch (e) { console.warn('  pas de miniature pour', rel, '-', e.message); return null; }
+}
 let album = {}; try { album = JSON.parse(fs.readFileSync(path.join(root, 'album.json'), 'utf8')); } catch {}
+const cover = fs.readdirSync(root).find(f => /^(cover|couverture|garde)\.(jpe?g|png|webp)$/i.test(f));
+if (cover) console.log('Page de garde :', cover);
 const dirs = fs.readdirSync(root, { withFileTypes: true })
   .filter(d => d.isDirectory() && /^step\d+/i.test(d.name)).map(d => d.name).sort(nat);
 const steps = [];
@@ -37,10 +54,13 @@ for (const d of dirs) {
     const pp = parse(tf ? fs.readFileSync(path.join(root, d, tf), 'utf8') : '');
     const g = await exifr.gps(p).catch(() => null);
     const m = await exifr.parse(p, ['DateTimeOriginal']).catch(() => null);
-    photos.push({ src: `${d}/${f}`, text: pp.text, mode: pp.mode, lat: g?.latitude ?? null, lng: g?.longitude ?? null,
+    photos.push({ src: `${d}/${f}`, thumb: await mkThumb(`${d}/${f}`), text: pp.text, mode: pp.mode,
+      lat: g?.latitude ?? null, lng: g?.longitude ?? null,
       date: m?.DateTimeOriginal ? new Date(m.DateTimeOriginal).toISOString() : null });
   }
   steps.push({ id: d, name, desc, mode: sp.mode, photos });
   console.log(d, '-', name, '-', photos.length, 'photos,', photos.filter(p => p.lat != null).length, 'géolocalisées');
 }
-fs.writeFileSync(path.join(root, 'manifest.json'), JSON.stringify({ title: album.title, author: album.author, steps }, null, 1));
+fs.writeFileSync(path.join(root, 'manifest.json'), JSON.stringify({
+  title: album.title, author: album.author, subtitle: album.subtitle,
+  cover: cover ? { src: cover } : null, steps }, null, 1));
