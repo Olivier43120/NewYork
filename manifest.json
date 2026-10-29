@@ -12,7 +12,7 @@
    "photos": [
     {
      "src": "Step1/img001.jpg",
-     "thumb": null,
+     "thumb": "thumbs/Step1/img001.jpg",
      "text": "Première **tentative**",
      "mode": null,
      "lat": 40.77236944444444,
@@ -21,7 +21,7 @@
     },
     {
      "src": "Step1/img002.JPG",
-     "thumb": null,
+     "thumb": "thumbs/Step1/img002.jpg",
      "text": "",
      "mode": null,
      "lat": null,
@@ -38,7 +38,7 @@
    "photos": [
     {
      "src": "Step2/img003.jpg",
-     "thumb": null,
+     "thumb": "thumbs/Step2/img003.jpg",
      "text": "",
      "mode": null,
      "lat": 40.752627777777775,
@@ -47,7 +47,7 @@
     },
     {
      "src": "Step2/img004.jpg",
-     "thumb": null,
+     "thumb": "thumbs/Step2/img004.jpg",
      "text": "",
      "mode": null,
      "lat": 40.753613888888886,
@@ -56,7 +56,7 @@
     },
     {
      "src": "Step2/img005.jpg",
-     "thumb": null,
+     "thumb": "thumbs/Step2/img005.jpg",
      "text": "",
      "mode": null,
      "lat": 40.753055555555555,
