@@ -77,7 +77,17 @@ body.inview #rail{display:none}
  body.inview #map{left:var(--side)}
  #viewer{transform:translateX(-105%)}#viewer.on{transform:none}
 }
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+#cover{position:fixed;inset:0;z-index:2000;background:#000;cursor:pointer;touch-action:none;transition:transform .85s cubic-bezier(.7,0,.2,1),opacity .85s}
+#cover.out{transform:translateY(-100%);opacity:.5}
+#cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#cvs{position:absolute;inset:0;background:linear-gradient(#0006,transparent 25%,transparent 42%,#000d)}
+#cvt{position:absolute;left:28px;right:28px;bottom:calc(48px + env(safe-area-inset-bottom));max-width:720px}
+#cvt small{font-size:15px;letter-spacing:.14em;text-transform:uppercase;opacity:.92}
+#cvt h1{font-size:clamp(38px,9vw,72px);line-height:1.02;font-weight:700;text-shadow:0 2px 20px #000a;margin:6px 0 0}
+#cvt p{font-size:19px;color:#e4e9ee;margin:10px 0 0}
+#cvb{display:inline-block;margin-top:26px;padding:14px 26px;border-radius:30px;background:#fff;color:var(--night);font-weight:600;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}#cvb{animation:none}}
 </style>
 </head>
 <body>
@@ -94,6 +104,8 @@ body.inview #rail{display:none}
  <div id="cap"><h2 id="t"></h2><p class="m" id="m"></p><div class="d" id="d"></div></div>
  <div id="act"><button id="prev">&#8249;</button><span id="cnt"></span><button id="next">&#8250;</button></div>
 </section>
+<section id="cover" hidden><img id="cv" alt=""><div id="cvs"></div>
+ <div id="cvt"><small id="cva"></small><h1 id="cvh"></h1><p id="cvp"></p><span id="cvb">Ouvrir l’album &#8250;</span></div></section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 const $=s=>document.querySelector(s), DESK=matchMedia('(min-width:900px)');
@@ -108,7 +120,7 @@ const km=(a,b)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(b[0]-a[0])/2)**2+Math.cos
 const pad=()=>{const h=innerHeight;
  if(view)return DESK.matches?{paddingTopLeft:[60,90],paddingBottomRight:[60,60]}:{paddingTopLeft:[50,90],paddingBottomRight:[50,h-240+20]};
  return {paddingTopLeft:[60,100],paddingBottomRight:[60,DESK.matches?270:260]}};
-const pin=(p,c)=>L.marker(loc(p),{icon:L.divIcon({className:'',iconSize:[48,48],html:`<div class="pin ${c}"><img src="${p.src}" alt=""></div>`})});
+const pin=(p,c)=>L.marker(loc(p),{icon:L.divIcon({className:'',iconSize:[48,48],html:`<div class="pin ${c}"><img src="${p.thumb||p.src}" alt=""></div>`})});
 const dash=pts=>L.polyline(pts,{color:'#fff',weight:2.5,dashArray:'7 8',opacity:.9});
 
 // Trajets : trait droit en dessous de FLIGHT_KM, sinon arc courbe + avions régulièrement espacés
@@ -140,13 +152,24 @@ function init(m){
  const all=steps.flatMap(s=>s.photos),pts=all.filter(loc).map(loc);let d=0;for(let i=1;i<pts.length;i++)d+=km(pts[i-1],pts[i]);
  const days=new Set(all.map(p=>(p.date||'').slice(0,10)).filter(Boolean)).size;
  $('#stats').innerHTML=[[steps.length,'steps'],[all.length,'photos'],[Math.round(d).toLocaleString('fr-FR'),'km'],[days||'–','jours']].map(([a,b])=>`<div><b>${a}</b><small>${b}</small></div>`).join('');
- $('#list').innerHTML=steps.map((s,i)=>`<div class="row" data-i="${i}"><img src="${s.photos[0].src}" alt=""><div><b>${s.name}</b><small>${fmt(s.photos[0].date)} · ${s.photos.length} photos</small></div></div>`).join('');
- $('#rail').innerHTML=steps.map((s,i)=>`<article class="card" data-i="${i}"><img src="${s.photos[0].src}" alt="" loading="lazy"><i></i><div><b>${s.name}</b><small>${fmt(s.photos[0].date)} · ${s.photos.length} photos</small></div></article>`).join('');
+ $('#list').innerHTML=steps.map((s,i)=>`<div class="row" data-i="${i}"><img src="${s.photos[0].thumb||s.photos[0].src}" alt=""><div><b>${s.name}</b><small>${fmt(s.photos[0].date)} · ${s.photos.length} photos</small></div></div>`).join('');
+ $('#rail').innerHTML=steps.map((s,i)=>`<article class="card" data-i="${i}"><img src="${s.photos[0].thumb||s.photos[0].src}" alt="" loading="lazy"><i></i><div><b>${s.name}</b><small>${fmt(s.photos[0].date)} · ${s.photos.length} photos</small></div></article>`).join('');
  $('#list').onclick=e=>{const r=e.target.closest('.row');if(r)openStep(+r.dataset.i)};
  $('#rail').onclick=e=>{const c=e.target.closest('.card');if(c)openStep(+c.dataset.i)};
  let t;$('#rail').onscroll=()=>{clearTimeout(t);t=setTimeout(()=>{const r=$('#rail').getBoundingClientRect(),mid=r.left+r.width/2;let b=0,bd=1e9;
   document.querySelectorAll('.card').forEach((c,i)=>{const q=c.getBoundingClientRect(),dd=Math.abs(q.left+q.width/2-mid);if(dd<bd){bd=dd;b=i}});if(b!==cur)setActive(b,false)},90)};
- setActive(0,false);
+ if(!openCover(m))setActive(0,false);
+}
+function openCover(m){
+ if(!m.cover)return false;
+ const C=$('#cover');let done=false,y0=0;
+ $('#cv').src=m.cover.src;$('#cva').textContent=m.author||'';$('#cvh').textContent=m.title||'Mon voyage';$('#cvp').textContent=m.subtitle||'';
+ C.hidden=false;
+ const go=()=>{if(done)return;done=true;removeEventListener('keydown',k);C.classList.add('out');setTimeout(()=>{C.hidden=true},900);M.invalidateSize();setActive(0,false)};
+ const k=e=>{if(['Enter',' ','ArrowRight','ArrowUp'].includes(e.key)){e.preventDefault();go()}};
+ addEventListener('keydown',k);C.onclick=go;
+ C.addEventListener('pointerdown',e=>y0=e.clientY);C.addEventListener('pointerup',e=>{if(y0-e.clientY>40)go()});
+ return true;
 }
 function homeMap(fit){
  G.clearLayers();const vs=steps.filter(s=>s.loc),pts=vs.map(s=>s.loc);
@@ -171,7 +194,7 @@ function openStep(i,j=0){cur=i;view={i,j};document.body.classList.add('inview');
 function show(j,first){
  const s=steps[view.i];
  j=Math.max(0,Math.min(j,s.photos.length-1));view.j=j;const p=s.photos[j];
- $('#ph').src=p.src;$('#t').textContent=s.name;
+ $('#ph').src=p.src;{const nx=s.photos[j+1];if(nx)new Image().src=nx.src}$('#t').textContent=s.name;
  $('#m').textContent=[fmt(p.date),p.lat==null?'':p.lat.toFixed(3)+'°, '+p.lng.toFixed(3)+'°'].filter(Boolean).join('  ·  ');
  $('#d').innerHTML=md(p.text||(j===0?s.desc:'')||'');
  $('#cnt').textContent=(j+1)+' / '+s.photos.length;
