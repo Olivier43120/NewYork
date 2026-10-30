@@ -104,89 +104,39 @@
   },
   {
    "id": "Step3",
-   "name": "Arrivée à destination ! 19h40 heure local.",
+   "name": "Step3",
    "desc": "",
    "mode": null,
    "photos": [
     {
-     "src": "Step3/img001.jpeg?v=a9280f7a",
+     "src": "Step3/img003.jpeg?v=420bbdf4",
      "type": "image",
-     "thumb": "thumbs/Step3/img001.jpg?v=a9280f7a",
-     "text": "Beaucoup de temps passé au contrôle des frontières, plus que les valises à récupérer.",
-     "mode": null,
-     "lat": 40.648041666666664,
-     "lng": -73.79048055555555,
-     "date": "2026-10-20T21:31:34.000Z"
-    },
-    {
-     "src": "Step3/img002.jpeg?v=1e020b3f",
-     "type": "image",
-     "thumb": "thumbs/Step3/img002.jpg?v=1e020b3f",
-     "text": "Après une journée de 19 heures, tout le monde fatigue...",
-     "mode": null,
-     "lat": null,
-     "lng": null,
-     "date": "2026-10-21T06:37:10.000Z"
-    },
-    {
-     "src": "Step3/img003.jpeg?v=76ab7a77",
-     "type": "image",
-     "thumb": "thumbs/Step3/img003.jpg?v=76ab7a77",
-     "text": "",
-     "mode": null,
-     "lat": 40.73012222222222,
-     "lng": -73.87338333333332,
-     "date": "2026-10-20T22:28:25.000Z"
-    },
-    {
-     "src": "Step3/img004.jpeg?v=3dae08ab",
-     "type": "image",
-     "thumb": "thumbs/Step3/img004.jpg?v=3dae08ab",
+     "thumb": "thumbs/Step3/img003.jpg?v=420bbdf4",
      "text": "",
      "mode": null,
      "lat": null,
      "lng": null,
-     "date": "2026-10-21T06:37:10.000Z"
+     "date": "2026-10-20T22:40:32.000Z"
     },
     {
-     "src": "Step3/img005.jpeg?v=22ee441b",
+     "src": "Step3/img004.jpeg?v=53ff8bfc",
      "type": "image",
-     "thumb": "thumbs/Step3/img005.jpg?v=22ee441b",
-     "text": "C'est le majestueux Empire State Building qui nous accueille !",
-     "mode": null,
-     "lat": 40.749805555555554,
-     "lng": -73.99153888888888,
-     "date": "2026-10-20T22:49:24.000Z"
-    },
-    {
-     "src": "Step3/img006.jpeg?v=01936084",
-     "type": "image",
-     "thumb": "thumbs/Step3/img006.jpg?v=01936084",
+     "thumb": "thumbs/Step3/img004.jpg?v=53ff8bfc",
      "text": "",
      "mode": null,
-     "lat": 40.749858333333336,
-     "lng": -73.99161666666667,
-     "date": "2026-10-20T22:50:38.000Z"
+     "lat": 49.93697777777778,
+     "lng": -64.177575,
+     "date": "2026-10-20T23:25:07.000Z"
     },
     {
-     "src": "Step3/img007.jpeg?v=6bfb1669",
+     "src": "Step3/img005.jpeg?v=fe06ab3c",
      "type": "image",
-     "thumb": "thumbs/Step3/img007.jpg?v=6bfb1669",
+     "thumb": "thumbs/Step3/img005.jpg?v=fe06ab3c",
      "text": "",
      "mode": null,
-     "lat": 40.74862777777778,
-     "lng": -73.98824444444445,
-     "date": "2026-10-20T22:58:02.000Z"
-    },
-    {
-     "src": "Step3/img008.jpeg?v=25145d68",
-     "type": "image",
-     "thumb": "thumbs/Step3/img008.jpg?v=25145d68",
-     "text": "",
-     "mode": null,
-     "lat": 40.749877777777776,
-     "lng": -73.98616666666666,
-     "date": "2026-10-20T23:22:54.000Z"
+     "lat": 42.233513888888886,
+     "lng": -71.19035277777778,
+     "date": "2026-10-21T00:40:38.000Z"
     }
    ]
   }
