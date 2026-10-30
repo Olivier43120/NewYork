@@ -48,16 +48,19 @@ body.inview #rail{display:none}
 #viewer.full #prog{top:calc(14px + env(safe-area-inset-top))}
 #viewer>img,#viewer>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none}
 #viewer>img#bg{inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);filter:blur(28px) brightness(.55) saturate(1.2);transform:translateZ(0)}
-#shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(#0008,transparent 18%,transparent 55%,#000d)}
+#shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(#0008,transparent 16%,transparent 64%,#000c)}
 #prog{position:absolute;top:14px;left:18px;right:18px;display:flex;gap:8px;z-index:2}
 #prog i{flex:1;height:3px;border-radius:3px;background:#fff5;overflow:hidden}
 #prog i.d:after{content:"";display:block;height:100%;background:#fff}
-#cap{position:absolute;left:24px;right:24px;bottom:calc(30px + env(safe-area-inset-bottom));pointer-events:none}
-#cap h2{font-size:30px;font-weight:600;line-height:1.1;text-shadow:0 2px 12px #000}
-#cap p.m{margin:12px 0;font-size:15px;font-weight:500}
-#cap .d p{margin:0 0 .6em}#cap .d b{font-weight:700}#cap .d{color:#e4e9ee;font-size:18px;line-height:1.6;max-width:60ch;padding-bottom:64px}
-#act{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;width:max-content;font-variant-numeric:tabular-nums;bottom:calc(14px + env(safe-area-inset-bottom));display:flex;gap:22px;align-items:center;background:#555d;backdrop-filter:blur(14px);padding:12px 24px;border-radius:30px;z-index:3;font-size:20px}
-#vc{display:contents}#cnt{display:inline-block;min-width:4.2ch;text-align:center}#act button{background:none;border:0;color:#fff;font:inherit;cursor:pointer}
+#cap{position:absolute;left:20px;right:20px;bottom:calc(20px + env(safe-area-inset-bottom));pointer-events:none}
+#cap h2{font-size:22px;font-weight:600;line-height:1.15;text-shadow:0 2px 12px #000}
+#cap p.m{margin:6px 0 8px;font-size:13px;font-weight:500;opacity:.92}
+#cap .d p{margin:0 0 .6em}#cap .d b{font-weight:700}#cap .d{color:#e4e9ee;font-size:15px;line-height:1.5;max-width:60ch}
+#vc{position:absolute;top:32px;right:16px;display:flex;gap:8px;z-index:3}
+#vc[hidden]{display:none}
+#viewer.full #vc{top:calc(32px + env(safe-area-inset-top))}
+#vc button{width:38px;height:38px;border-radius:50%;border:0;background:#0007;backdrop-filter:blur(10px);color:#fff;font-size:15px;cursor:pointer}
+.nv{display:none}
 /* barre latérale (ordinateur) */
 #side,#split{display:none}
 @media(min-width:900px){
@@ -77,6 +80,8 @@ body.inview #rail{display:none}
  #split:after{content:"";position:absolute;left:4px;top:50%;width:4px;height:56px;margin-top:-28px;border-radius:4px;background:#ffffffaa;opacity:0;transition:opacity .2s}
  #split:hover:after,#split:focus-visible:after,body.dragging #split:after{opacity:1}
  body.dragging{cursor:col-resize;user-select:none}
+ .nv{display:grid;place-items:center;position:absolute;top:50%;width:42px;height:42px;margin-top:-21px;border-radius:50%;border:0;background:#0007;color:#fff;font-size:26px;line-height:1;cursor:pointer;z-index:3;opacity:0;transition:opacity .2s}
+ #viewer:hover .nv{opacity:1}#prev{left:12px}#next{right:12px}
  #top{left:var(--side);width:calc(100% - var(--side))}
  #ttl{visibility:hidden}
  #viewer{top:0;bottom:0;right:auto;width:var(--side);border-radius:0}
@@ -114,7 +119,8 @@ body.inview #rail{display:none}
 <section id="viewer">
  <img id="bg" alt="" draggable="false"><img id="ph" alt="" draggable="false"><video id="vd" playsinline hidden></video><div id="shade"></div><div id="prog"></div>
  <div id="cap"><h2 id="t"></h2><p class="m" id="m"></p><div class="d" id="d"></div></div>
- <div id="act"><button id="prev">&#8249;</button><span id="cnt"></span><button id="next">&#8250;</button><span id="vc" hidden><button id="pp"></button><button id="mu"></button></span></div>
+ <button id="prev" class="nv" aria-label="Précédent">&#8249;</button><button id="next" class="nv" aria-label="Suivant">&#8250;</button>
+ <div id="vc" hidden><button id="pp"></button><button id="mu"></button></div>
 </section>
 <section id="cover" hidden><img id="cv" alt=""><div id="cvs"></div>
  <div id="cvt"><small id="cva"></small><h1 id="cvh"></h1><p id="cvp"></p><span id="cvb">Ouvrir l’album &#8250;</span></div></section>
@@ -231,7 +237,6 @@ function show(j,first){
  media(p);{const nx=s.photos[j+1];if(nx&&nx.type!=='video')new Image().src=nx.src}$('#t').textContent=s.name;
  $('#m').textContent=[fmt(p.date),p.lat==null?'':p.lat.toFixed(3)+'°, '+p.lng.toFixed(3)+'°'].filter(Boolean).join('  ·  ');
  $('#d').innerHTML=md(p.text||(j===0?s.desc:'')||'');
- $('#cnt').textContent=(j+1)+' / '+s.photos.length;
  [...$('#prog').children].forEach((e,k)=>e.className=k<=j?'d':'');
  G.eachLayer(l=>{if(l.getElement){const el=l.getElement().firstChild;el&&el.classList.toggle('on',l.getLatLng().equals(loc(p)))}});
  if(!first&&loc(p))M.fitBounds(L.latLngBounds([loc(p),loc(p)]),{...pad(),maxZoom:Math.max(M.getZoom(),15),duration:.8});
@@ -245,7 +250,7 @@ $('#lay').onclick=()=>{sat=!sat;M.removeLayer(sat?PLAN:SAT);M.addLayer(sat?SAT:P
 addEventListener('keydown',e=>{if(!view)return;if(e.key==='ArrowRight')show(view.j+1);if(e.key==='ArrowLeft')show(view.j-1);if(e.key==='Escape')closeView()});
 // glisser : côtés = photo suivante/précédente, vers le bas = fermer le step
 let x0=null,y0=0,drag=false;const V=$('#viewer');
-V.addEventListener('pointerdown',e=>{if(e.target.closest('#act'))return;x0=e.clientX;y0=e.clientY;drag=false});
+V.addEventListener('pointerdown',e=>{if(e.target.closest('#vc,.nv'))return;x0=e.clientX;y0=e.clientY;drag=false});
 V.addEventListener('pointermove',e=>{if(x0===null||DESK.matches)return;const dx=e.clientX-x0,dy=e.clientY-y0;
  if(dy>10&&dy>Math.abs(dx)){drag=true;V.style.transition='none';V.style.transform=`translateY(${dy}px)`}});
 V.addEventListener('pointerup',e=>{if(x0===null||!view)return;const dx=e.clientX-x0,dy=e.clientY-y0;x0=null;V.style.transition='';
