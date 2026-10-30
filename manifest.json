@@ -49,7 +49,28 @@
    "name": "Escale à Londres Heathrow",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step2/img001.jpeg?v=79598d07",
+     "type": "image",
+     "thumb": "thumbs/Step2/img001.jpg?v=79598d07",
+     "text": "",
+     "mode": null,
+     "lat": 51.472461111111116,
+     "lng": -0.48685,
+     "date": "2026-10-20T13:57:34.000Z"
+    },
+    {
+     "src": "Step2/img002.jpeg?v=250b6068",
+     "type": "image",
+     "thumb": "thumbs/Step2/img002.jpg?v=250b6068",
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-21T06:37:09.000Z"
+    }
+   ]
   }
  ]
 }
