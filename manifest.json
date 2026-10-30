@@ -197,14 +197,14 @@
      "date": "2026-10-20T22:58:02.000Z"
     },
     {
-     "src": "Step4/img008.jpeg?v=25145d68",
+     "src": "Step4/img009.jpeg?v=ba8ab5a0",
      "type": "image",
-     "thumb": "thumbs/Step4/img008.jpg?v=25145d68",
+     "thumb": null,
      "text": "",
      "mode": null,
-     "lat": 40.749877777777776,
-     "lng": -73.98616666666666,
-     "date": "2026-10-20T23:22:54.000Z"
+     "lat": null,
+     "lng": null,
+     "date": null
     }
    ]
   }
