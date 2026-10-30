@@ -366,7 +366,7 @@
   },
   {
    "id": "Step7",
-   "name": "La **Rose Main Reading Room** est la salle de lecture principale : située au 3ème étage, ses murs sont couverts d’étagères remplies de livres.",
+   "name": "Premier jour : suite de la balade à la New York Public Library",
    "desc": "",
    "mode": null,
    "photos": [
@@ -429,6 +429,36 @@
      "lat": 40.75340277777778,
      "lng": -73.9815888888889,
      "date": "2026-10-21T12:33:01.000Z"
+    },
+    {
+     "src": "Step7/img007.jpeg?v=a0485d56",
+     "type": "image",
+     "thumb": "thumbs/Step7/img007.jpg?v=a0485d56",
+     "text": "La **Rose Main Reading Room** est la salle de lecture principale : située au 3ème étage, ses murs sont couverts d’étagères remplies de livres.",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-21T13:41:08.000Z"
+    },
+    {
+     "src": "Step7/img008.jpeg?v=9ac631ca",
+     "type": "image",
+     "thumb": "thumbs/Step7/img008.jpg?v=9ac631ca",
+     "text": "Longue de près de 100 mètres et richement décorées avec des moulures, des lustres et des peintures au plafond, cet un endroit étonnant où les New-Yorkais viennent régulièrement étudier et travailler dans le calme.",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-21T13:41:56.000Z"
+    },
+    {
+     "src": "Step7/img009.jpeg?v=b8538e73",
+     "type": "image",
+     "thumb": "thumbs/Step7/img009.jpg?v=b8538e73",
+     "text": "",
+     "mode": null,
+     "lat": 40.75311666666666,
+     "lng": -73.98221666666667,
+     "date": "2026-10-21T13:41:27.000Z"
     }
    ]
   }
