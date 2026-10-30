@@ -255,14 +255,14 @@
      "date": "2026-10-21T10:54:57.000Z"
     },
     {
-     "src": "Step5/img005.jpeg?v=717739c8",
+     "src": "Step5/img004.jpeg?v=ba8ab5a0",
      "type": "image",
-     "thumb": "thumbs/Step5/img005.jpg?v=717739c8",
+     "thumb": null,
      "text": "",
      "mode": null,
-     "lat": 40.75128888888889,
-     "lng": -73.976425,
-     "date": "2026-10-21T10:56:39.000Z"
+     "lat": null,
+     "lng": null,
+     "date": null
     },
     {
      "src": "Step5/img006.jpeg?v=f1c3559e",
