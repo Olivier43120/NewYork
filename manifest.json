@@ -2,7 +2,9 @@
  "title": "New York",
  "author": "Olivier SOLEILLANT",
  "subtitle": "Voyage en famille à New York, 20 octobre - 27 octobre 2026",
- "cover": null,
+ "cover": {
+  "src": "cover.jpeg"
+ },
  "steps": [
   {
    "id": "Step1",
