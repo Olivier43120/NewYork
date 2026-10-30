@@ -147,9 +147,9 @@
      "date": "2026-10-21T06:37:10.000Z"
     },
     {
-     "src": "Step4/img003.jpeg?v=76ab7a77",
+     "src": "Step4/img004.jpeg?v=76ab7a77",
      "type": "image",
-     "thumb": "thumbs/Step4/img003.jpg?v=76ab7a77",
+     "thumb": "thumbs/Step4/img004.jpg?v=76ab7a77",
      "text": "",
      "mode": null,
      "lat": 40.73012222222222,
@@ -157,9 +157,9 @@
      "date": "2026-10-20T22:28:25.000Z"
     },
     {
-     "src": "Step4/img004.jpeg?v=3dae08ab",
+     "src": "Step4/img005.jpeg?v=3dae08ab",
      "type": "image",
-     "thumb": "thumbs/Step4/img004.jpg?v=3dae08ab",
+     "thumb": "thumbs/Step4/img005.jpg?v=3dae08ab",
      "text": "",
      "mode": null,
      "lat": null,
@@ -167,14 +167,14 @@
      "date": "2026-10-21T06:37:10.000Z"
     },
     {
-     "src": "Step4/img005.jpeg?v=22ee441b",
+     "src": "Step4/img006.jpeg?v=ba8ab5a0",
      "type": "image",
-     "thumb": "thumbs/Step4/img005.jpg?v=22ee441b",
-     "text": "",
+     "thumb": null,
+     "text": "A la sortie de métro, c'est le majestueux Empire State Building qui nous accueille !",
      "mode": null,
-     "lat": 40.749805555555554,
-     "lng": -73.99153888888888,
-     "date": "2026-10-20T22:49:24.000Z"
+     "lat": null,
+     "lng": null,
+     "date": null
     },
     {
      "src": "Step4/img007.jpeg?v=01936084",
