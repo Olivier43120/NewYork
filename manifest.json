@@ -104,7 +104,7 @@
   },
   {
    "id": "Step3",
-   "name": "Après 8 heures de vol, tout le monde est fatigué !",
+   "name": "Dernière étape !",
    "desc": "",
    "mode": null,
    "photos": [
@@ -139,6 +139,13 @@
      "date": "2026-10-21T00:40:38.000Z"
     }
    ]
+  },
+  {
+   "id": "Step4",
+   "name": "Après 8 heures de vol, tout le monde est fatigué !",
+   "desc": "",
+   "mode": null,
+   "photos": []
   }
  ]
 }
