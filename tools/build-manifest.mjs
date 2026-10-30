@@ -1,6 +1,6 @@
 // Parcourt Step1, Step2... : écrit manifest.json (textes, trajets, GPS, dates, vidéos, page de garde)
 // et génère des miniatures dans thumbs/ (photos : "sharp" ; vidéos : "ffmpeg").
-import fs from 'fs'; import path from 'path'; import exifr from 'exifr'; import { spawnSync } from 'child_process';
+import crypto from 'crypto'; import fs from 'fs'; import path from 'path'; import exifr from 'exifr'; import { spawnSync } from 'child_process';
 let sharp = null; try { sharp = (await import('sharp')).default; } catch { console.warn('sharp absent : pas de miniatures de photos'); }
 const has = c => { try { return spawnSync(c, ['-version']).status === 0; } catch { return false; } };
 const FF = has('ffmpeg') && has('ffprobe');
@@ -28,32 +28,42 @@ function parse(raw) {
   return { mode, gps, text: kept.join('\n').trim() };
 }
 const okFile = f => fs.existsSync(f) && fs.statSync(f).size > 0;
+// Cache : empreinte (sha1) de chaque original, pour recréer une miniature quand la photo change
+const cachePath = path.join(root, 'thumbs', 'cache.json');
+let cache = {}; try { cache = JSON.parse(fs.readFileSync(cachePath, 'utf8')); } catch {}
+const hashes = {};
+const hashOf = f => crypto.createHash('sha1').update(fs.readFileSync(f)).digest('hex');
+const full = rel => (hashes[rel] ??= hashOf(path.join(root, rel)));
+const vh = rel => full(rel).slice(0, 8);           // suffixe ?v=... : force le navigateur à recharger
+const stale = (rel, dst) => !(okFile(dst) && cache[rel] === full(rel));
 // Miniature de photo : 480 px max, thumbs/<même chemin>.jpg (créée une seule fois)
 async function mkThumb(rel) {
   if (!sharp) return null;
   const out = rel.replace(/\.[^.]+$/, '.jpg'), dst = path.join(root, 'thumbs', out);
   try {
-    if (!fs.existsSync(dst)) {
+    if (stale(rel, dst)) {
       fs.mkdirSync(path.dirname(dst), { recursive: true });
       await sharp(path.join(root, rel)).rotate().resize({ width: 480, height: 480, fit: 'inside', withoutEnlargement: true })
         .jpeg({ quality: 72 }).toFile(dst);
+      cache[rel] = full(rel);
     }
-    return 'thumbs/' + out;
+    return 'thumbs/' + out + '?v=' + vh(rel);
   } catch (e) { console.warn('  pas de miniature pour', rel, '-', e.message); return null; }
 }
 // Image d'aperçu d'une vidéo (1re image)
 function mkPoster(rel) {
   if (!FF) return null;
   const out = rel.replace(/\.[^.]+$/, '.jpg'), dst = path.join(root, 'thumbs', out);
-  if (!okFile(dst)) {
+  if (stale(rel, dst)) {
     fs.mkdirSync(path.dirname(dst), { recursive: true });
     for (const ss of ['0.5', '0']) {
       spawnSync('ffmpeg', ['-y', '-v', 'error', '-ss', ss, '-i', path.join(root, rel), '-frames:v', '1',
         '-vf', 'scale=480:480:force_original_aspect_ratio=decrease', '-q:v', '4', dst]);
       if (okFile(dst)) break;
     }
+    if (okFile(dst)) cache[rel] = full(rel);
   }
-  if (okFile(dst)) return 'thumbs/' + out;
+  if (okFile(dst)) return 'thumbs/' + out + '?v=' + vh(rel);
   try { fs.unlinkSync(dst); } catch {}
   console.warn('  pas d\'aperçu pour', rel); return null;
 }
@@ -105,13 +115,15 @@ for (const d of dirs) {
       thumb = await mkThumb(rel);
     }
     if (pp.gps) g = { latitude: pp.gps[0], longitude: pp.gps[1] };
-    photos.push({ src: rel, type: vid ? 'video' : 'image', thumb, text: pp.text, mode: pp.mode,
+    photos.push({ src: rel + '?v=' + vh(rel), type: vid ? 'video' : 'image', thumb, text: pp.text, mode: pp.mode,
       lat: g?.latitude ?? null, lng: g?.longitude ?? null, date });
   }
   steps.push({ id: d, name, desc, mode: sp.mode, photos });
   const nv = photos.filter(p => p.type === 'video').length;
   console.log(d, '-', name, '-', photos.length - nv, 'photos,', nv, 'vidéos,', photos.filter(p => p.lat != null).length, 'géolocalisés');
 }
+for (const k of Object.keys(cache)) if (!fs.existsSync(path.join(root, k))) delete cache[k];
+if (Object.keys(cache).length) { fs.mkdirSync(path.join(root, 'thumbs'), { recursive: true }); fs.writeFileSync(cachePath, JSON.stringify(cache, null, 1)); }
 fs.writeFileSync(path.join(root, 'manifest.json'), JSON.stringify({
   title: album.title, author: album.author, subtitle: album.subtitle,
-  cover: cover ? { src: cover } : null, steps }, null, 1));
+  cover: cover ? { src: cover + '?v=' + vh(cover) } : null, steps }, null, 1));
