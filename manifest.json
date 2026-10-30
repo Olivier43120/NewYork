@@ -255,44 +255,44 @@
      "date": "2026-10-21T10:54:57.000Z"
     },
     {
-     "src": "Step5/img004.jpeg?v=ba8ab5a0",
+     "src": "Step5/img004.jpeg?v=717739c8",
      "type": "image",
-     "thumb": null,
+     "thumb": "thumbs/Step5/img004.jpg?v=717739c8",
      "text": "",
      "mode": null,
-     "lat": null,
-     "lng": null,
-     "date": null
+     "lat": 40.75128888888889,
+     "lng": -73.976425,
+     "date": "2026-10-21T10:56:39.000Z"
     },
     {
-     "src": "Step5/img005.jpeg?v=ba8ab5a0",
+     "src": "Step5/img005.jpeg?v=f1c3559e",
      "type": "image",
-     "thumb": null,
+     "thumb": "thumbs/Step5/img005.jpg?v=f1c3559e",
      "text": "Il fut officiellement inauguré le 27 mai 1930.",
      "mode": null,
-     "lat": null,
-     "lng": null,
-     "date": null
+     "lat": 40.75178611111111,
+     "lng": -73.97583888888889,
+     "date": "2026-10-21T11:07:32.000Z"
     },
     {
-     "src": "Step5/img006.jpeg?v=ba8ab5a0",
+     "src": "Step5/img006.jpeg?v=af69a5a1",
      "type": "image",
-     "thumb": null,
+     "thumb": "thumbs/Step5/img006.jpg?v=af69a5a1",
      "text": "Le building était le plus haut bâtiment du monde (si l'on excepte la Tour Eiffel)",
      "mode": null,
-     "lat": null,
-     "lng": null,
-     "date": null
+     "lat": 40.75191944444445,
+     "lng": -73.97576944444445,
+     "date": "2026-10-21T11:09:18.000Z"
     },
     {
-     "src": "Step5/img007.jpeg?v=ba8ab5a0",
+     "src": "Step5/img007.jpeg?v=9143f0a5",
      "type": "image",
-     "thumb": null,
+     "thumb": "thumbs/Step5/img007.jpg?v=9143f0a5",
      "text": "Un an plus tard, lors de l'inauguration de l'Empire State Building (et ses 381 mètres), le Chrysler perdit son titre.",
      "mode": null,
-     "lat": null,
-     "lng": null,
-     "date": null
+     "lat": 40.751736111111114,
+     "lng": -73.97544722222223,
+     "date": "2026-10-21T11:09:44.000Z"
     }
    ]
   }
