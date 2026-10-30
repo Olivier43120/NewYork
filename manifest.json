@@ -1,5 +1,5 @@
 {
- "title": "🇺🇸 New York",
+ "title": "New York",
  "author": "Olivier SOLEILLANT",
  "subtitle": "Voyage en famille à New York, 20 octobre - 27 octobre 2026",
  "cover": {
@@ -23,16 +23,6 @@
      "date": "2026-10-20T10:05:41.000Z"
     },
     {
-     "src": "Step1/img001.jpg",
-     "type": "image",
-     "thumb": "thumbs/Step1/img001.jpg",
-     "text": "Première **tentative**",
-     "mode": null,
-     "lat": 40.77236944444444,
-     "lng": -73.97196111111111,
-     "date": "2026-10-24T14:46:27.000Z"
-    },
-    {
      "src": "Step1/img002.jpeg",
      "type": "image",
      "thumb": "thumbs/Step1/img002.jpg",
@@ -41,16 +31,6 @@
      "lat": 45.71581944444445,
      "lng": 5.077908333333333,
      "date": "2026-10-20T11:00:20.000Z"
-    },
-    {
-     "src": "Step1/img002.JPG",
-     "type": "image",
-     "thumb": "thumbs/Step1/img002.jpg",
-     "text": "",
-     "mode": null,
-     "lat": null,
-     "lng": null,
-     "date": "2026-10-24T11:25:25.000Z"
     },
     {
      "src": "Step1/img003.jpeg",
