@@ -223,7 +223,88 @@
    "name": "Premier jour : ballade à travers New York, vers le Chrysler Building.",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step5/img001.jpeg?v=f473b7ae",
+     "type": "image",
+     "thumb": "thumbs/Step5/img001.jpg?v=f473b7ae",
+     "text": "",
+     "mode": null,
+     "lat": 40.74876666666667,
+     "lng": -73.98043888888888,
+     "date": "2026-10-21T10:40:32.000Z"
+    },
+    {
+     "src": "Step5/img002.jpeg?v=cb4a4911",
+     "type": "image",
+     "thumb": "thumbs/Step5/img002.jpg?v=cb4a4911",
+     "text": "",
+     "mode": null,
+     "lat": 40.747825,
+     "lng": -73.97885000000001,
+     "date": "2026-10-21T10:43:33.000Z"
+    },
+    {
+     "src": "Step5/img003.jpeg?v=a18680c2",
+     "type": "image",
+     "thumb": "thumbs/Step5/img003.jpg?v=a18680c2",
+     "text": "",
+     "mode": null,
+     "lat": 40.75108055555555,
+     "lng": -73.9756,
+     "date": "2026-10-21T10:54:57.000Z"
+    },
+    {
+     "src": "Step5/img004.jpeg?v=c36fdc1f",
+     "type": "image",
+     "thumb": "thumbs/Step5/img004.jpg?v=c36fdc1f",
+     "text": "",
+     "mode": null,
+     "lat": 40.75108055555555,
+     "lng": -73.9756,
+     "date": "2026-10-21T10:54:57.000Z"
+    },
+    {
+     "src": "Step5/img005.jpeg?v=717739c8",
+     "type": "image",
+     "thumb": "thumbs/Step5/img005.jpg?v=717739c8",
+     "text": "",
+     "mode": null,
+     "lat": 40.75128888888889,
+     "lng": -73.976425,
+     "date": "2026-10-21T10:56:39.000Z"
+    },
+    {
+     "src": "Step5/img006.jpeg?v=f1c3559e",
+     "type": "image",
+     "thumb": "thumbs/Step5/img006.jpg?v=f1c3559e",
+     "text": "",
+     "mode": null,
+     "lat": 40.75178611111111,
+     "lng": -73.97583888888889,
+     "date": "2026-10-21T11:07:32.000Z"
+    },
+    {
+     "src": "Step5/img007.jpeg?v=af69a5a1",
+     "type": "image",
+     "thumb": "thumbs/Step5/img007.jpg?v=af69a5a1",
+     "text": "",
+     "mode": null,
+     "lat": 40.75191944444445,
+     "lng": -73.97576944444445,
+     "date": "2026-10-21T11:09:18.000Z"
+    },
+    {
+     "src": "Step5/img008.jpeg?v=9143f0a5",
+     "type": "image",
+     "thumb": "thumbs/Step5/img008.jpg?v=9143f0a5",
+     "text": "",
+     "mode": null,
+     "lat": 40.751736111111114,
+     "lng": -73.97544722222223,
+     "date": "2026-10-21T11:09:44.000Z"
+    }
+   ]
   }
  ]
 }
