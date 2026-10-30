@@ -1,5 +1,5 @@
 {
- "title": "New York 🇺🇸",
+ "title": "New York",
  "author": "Olivier SOLEILLANT",
  "subtitle": "Voyage en famille à New York, 20 octobre - 27 octobre 2026",
  "cover": {
@@ -8,7 +8,7 @@
  "steps": [
   {
    "id": "Step1",
-   "name": "Départ le 20 octobre, 11 h 25. Tout le monde a bien dormi, de quoi encaisser les 14 heures de voyage.",
+   "name": "Départ le 20 octobre, 11 h 25, arrivée 19 h 40.",
    "desc": "",
    "mode": null,
    "photos": [
