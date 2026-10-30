@@ -6,18 +6,32 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+# Une seule exécution à la fois : les suivantes attendent leur tour (évite les conflits d'envoi)
+concurrency:
+  group: manifest
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}   # dernière version de la branche, pas celle du déclencheur
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
       - run: which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
       - run: npm install --no-save exifr sharp
       - run: node tools/build-manifest.mjs .
-      - run: |
+      - name: Enregistrer manifest.json et thumbs/
+        run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add manifest.json thumbs
-          git diff --cached --quiet || (git commit -m "maj manifest et miniatures" && git push)
+          if ! git diff --cached --quiet; then
+            git commit -m "maj manifest et miniatures"
+            for i in 1 2 3; do
+              if git pull --rebase -X theirs origin "${{ github.ref_name }}" && git push; then exit 0; fi
+              sleep 5
+            done
+            exit 1
+          fi
