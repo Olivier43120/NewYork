@@ -197,24 +197,24 @@
      "date": "2026-10-20T22:50:38.000Z"
     },
     {
-     "src": "Step4/img008.jpeg?v=ba8ab5a0",
+     "src": "Step4/img008.jpeg?v=6bfb1669",
      "type": "image",
-     "thumb": null,
+     "thumb": "thumbs/Step4/img008.jpg?v=6bfb1669",
      "text": "",
      "mode": null,
-     "lat": null,
-     "lng": null,
-     "date": null
+     "lat": 40.74862777777778,
+     "lng": -73.98824444444445,
+     "date": "2026-10-20T22:58:02.000Z"
     },
     {
-     "src": "Step4/img009.jpeg?v=ba8ab5a0",
+     "src": "Step4/img009.jpeg?v=25145d68",
      "type": "image",
-     "thumb": null,
+     "thumb": "thumbs/Step4/img009.jpg?v=25145d68",
      "text": "",
      "mode": null,
-     "lat": null,
-     "lng": null,
-     "date": null
+     "lat": 40.749877777777776,
+     "lng": -73.98616666666666,
+     "date": "2026-10-20T23:22:54.000Z"
     }
    ]
   },
