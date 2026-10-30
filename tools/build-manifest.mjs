@@ -35,13 +35,13 @@ const hashes = {};
 const hashOf = f => crypto.createHash('sha1').update(fs.readFileSync(f)).digest('hex');
 const full = rel => (hashes[rel] ??= hashOf(path.join(root, rel)));
 const vh = rel => full(rel).slice(0, 8);           // suffixe ?v=... : force le navigateur à recharger
-const stale = (rel, dst) => !(okFile(dst) && cache[rel] === full(rel));
+const stale = (key, rel, dst) => !(okFile(dst) && cache[key] === full(rel));
 // Miniature de photo : 480 px max, thumbs/<même chemin>.jpg (créée une seule fois)
 async function mkThumb(rel) {
   if (!sharp) return null;
   const out = rel.replace(/\.[^.]+$/, '.jpg'), dst = path.join(root, 'thumbs', out);
   try {
-    if (stale(rel, dst)) {
+    if (stale(rel, rel, dst)) {
       fs.mkdirSync(path.dirname(dst), { recursive: true });
       await sharp(path.join(root, rel)).rotate().resize({ width: 480, height: 480, fit: 'inside', withoutEnlargement: true })
         .jpeg({ quality: 72 }).toFile(dst);
@@ -50,11 +50,30 @@ async function mkThumb(rel) {
     return 'thumbs/' + out + '?v=' + vh(rel);
   } catch (e) { console.warn('  pas de miniature pour', rel, '-', e.message); return null; }
 }
+// Version allégée pour la visionneuse : 2000 px max, medium/<même chemin>.jpg (fluidité sur téléphone)
+// Les petites photos (≤ 2000 px et < 700 Ko) sont utilisées telles quelles.
+async function mkMedium(rel) {
+  if (!sharp) return null;
+  const out = rel.replace(/\.[^.]+$/, '.jpg'), src = path.join(root, rel), dst = path.join(root, 'medium', out);
+  try {
+    if (stale('m:' + rel, rel, dst)) {
+      const meta = await sharp(src).metadata();
+      if (Math.max(meta.width, meta.height) <= 2000 && fs.statSync(src).size < 700 * 1024) {
+        fs.rmSync(dst, { force: true }); cache['m:' + rel] = full(rel); return null;
+      }
+      fs.mkdirSync(path.dirname(dst), { recursive: true });
+      await sharp(src).rotate().resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 82 }).toFile(dst);
+      cache['m:' + rel] = full(rel);
+    }
+    return okFile(dst) ? 'medium/' + out + '?v=' + vh(rel) : null;
+  } catch (e) { console.warn('  pas de version allégée pour', rel, '-', e.message); return null; }
+}
 // Image d'aperçu d'une vidéo (1re image)
 function mkPoster(rel) {
   if (!FF) return null;
   const out = rel.replace(/\.[^.]+$/, '.jpg'), dst = path.join(root, 'thumbs', out);
-  if (stale(rel, dst)) {
+  if (stale(rel, rel, dst)) {
     fs.mkdirSync(path.dirname(dst), { recursive: true });
     for (const ss of ['0.5', '0']) {
       spawnSync('ffmpeg', ['-y', '-v', 'error', '-ss', ss, '-i', path.join(root, rel), '-frames:v', '1',
@@ -103,7 +122,7 @@ for (const d of dirs) {
     const rel = `${d}/${f}`, p = path.join(root, rel), vid = isVid(f);
     const tf = files.find(t => /\.txt$/i.test(t) && base(t) === base(f));
     const pp = parse(tf ? fs.readFileSync(path.join(root, d, tf), 'utf8') : '');
-    let g = null, date = null, thumb;
+    let g = null, date = null, thumb, med = null;
     if (vid) {
       const i = FF ? probe(p) : {};
       if (i.lat != null) g = { latitude: i.lat, longitude: i.lng };
@@ -112,17 +131,17 @@ for (const d of dirs) {
       g = await exifr.gps(p).catch(() => null);
       const m = await exifr.parse(p, ['DateTimeOriginal']).catch(() => null);
       date = m?.DateTimeOriginal ? new Date(m.DateTimeOriginal).toISOString() : null;
-      thumb = await mkThumb(rel);
+      thumb = await mkThumb(rel); med = await mkMedium(rel);
     }
     if (pp.gps) g = { latitude: pp.gps[0], longitude: pp.gps[1] };
-    photos.push({ src: rel + '?v=' + vh(rel), type: vid ? 'video' : 'image', thumb, text: pp.text, mode: pp.mode,
+    photos.push({ src: rel + '?v=' + vh(rel), type: vid ? 'video' : 'image', thumb, med, text: pp.text, mode: pp.mode,
       lat: g?.latitude ?? null, lng: g?.longitude ?? null, date });
   }
   steps.push({ id: d, name, desc, mode: sp.mode, photos });
   const nv = photos.filter(p => p.type === 'video').length;
   console.log(d, '-', name, '-', photos.length - nv, 'photos,', nv, 'vidéos,', photos.filter(p => p.lat != null).length, 'géolocalisés');
 }
-for (const k of Object.keys(cache)) if (!fs.existsSync(path.join(root, k))) delete cache[k];
+for (const k of Object.keys(cache)) if (!fs.existsSync(path.join(root, k.replace(/^m:/, '')))) delete cache[k];
 if (Object.keys(cache).length) { fs.mkdirSync(path.join(root, 'thumbs'), { recursive: true }); fs.writeFileSync(cachePath, JSON.stringify(cache, null, 1)); }
 fs.writeFileSync(path.join(root, 'manifest.json'), JSON.stringify({
   title: album.title, author: album.author, subtitle: album.subtitle,
