@@ -46,41 +46,10 @@
   },
   {
    "id": "Step2",
-   "name": "Visite du Summit",
+   "name": "Escale à Londres Heathrow",
    "desc": "",
    "mode": null,
-   "photos": [
-    {
-     "src": "Step2/img003.jpg?v=4f23fad5",
-     "type": "image",
-     "thumb": "thumbs/Step2/img003.jpg?v=4f23fad5",
-     "text": "",
-     "mode": null,
-     "lat": 40.752627777777775,
-     "lng": -73.9787,
-     "date": "2026-10-26T08:56:35.000Z"
-    },
-    {
-     "src": "Step2/img004.jpg?v=5d3aac7d",
-     "type": "image",
-     "thumb": "thumbs/Step2/img004.jpg?v=5d3aac7d",
-     "text": "",
-     "mode": null,
-     "lat": 40.753613888888886,
-     "lng": -73.97865277777778,
-     "date": "2026-10-26T09:17:01.000Z"
-    },
-    {
-     "src": "Step2/img005.jpg?v=7cae917f",
-     "type": "image",
-     "thumb": "thumbs/Step2/img005.jpg?v=7cae917f",
-     "text": "",
-     "mode": null,
-     "lat": 40.753055555555555,
-     "lng": -73.97853888888889,
-     "date": "2026-10-26T09:45:37.000Z"
-    }
-   ]
+   "photos": []
   }
  ]
 }
