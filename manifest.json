@@ -545,7 +545,48 @@
    "name": "Première journée : tombée de la nuit depuis l'observatoire du Top of the Rock",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step9/img001.jpeg?v=193995b8",
+     "type": "image",
+     "thumb": "thumbs/Step9/img001.jpg?v=193995b8",
+     "text": "",
+     "mode": null,
+     "lat": 40.75828888888889,
+     "lng": -73.97755555555555,
+     "date": "2026-10-21T15:11:45.000Z"
+    },
+    {
+     "src": "Step9/img002.jpeg?v=dcd7be30",
+     "type": "image",
+     "thumb": "thumbs/Step9/img002.jpg?v=dcd7be30",
+     "text": "",
+     "mode": null,
+     "lat": 40.758744444444446,
+     "lng": -73.97700555555556,
+     "date": "2026-10-21T15:17:05.000Z"
+    },
+    {
+     "src": "Step9/img003.jpeg?v=2a0df742",
+     "type": "image",
+     "thumb": "thumbs/Step9/img003.jpg?v=2a0df742",
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-22T05:44:14.000Z"
+    },
+    {
+     "src": "Step9/img004.jpeg?v=a9ed8682",
+     "type": "image",
+     "thumb": "thumbs/Step9/img004.jpg?v=a9ed8682",
+     "text": "",
+     "mode": null,
+     "lat": 40.75901666666667,
+     "lng": -73.97847777777778,
+     "date": "2026-10-21T16:00:23.000Z"
+    }
+   ]
   }
  ]
 }
