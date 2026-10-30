@@ -3,7 +3,7 @@
  "author": "Olivier SOLEILLANT",
  "subtitle": "Voyage en famille à New York, 20 octobre - 27 octobre 2026",
  "cover": {
-  "src": "cover.jpeg"
+  "src": "cover.jpeg?v=3c278171"
  },
  "steps": [
   {
@@ -13,9 +13,9 @@
    "mode": null,
    "photos": [
     {
-     "src": "Step1/img001.jpeg",
+     "src": "Step1/img001.jpeg?v=6cddb345",
      "type": "image",
-     "thumb": "thumbs/Step1/img001.jpg",
+     "thumb": "thumbs/Step1/img001.jpg?v=6cddb345",
      "text": "Départ de Lyon Saint Exupéry 🇫🇷 à 11h25. out le monde a bien dormi !",
      "mode": null,
      "lat": 45.71794166666667,
@@ -23,9 +23,9 @@
      "date": "2026-10-20T10:05:41.000Z"
     },
     {
-     "src": "Step1/img002.jpeg",
+     "src": "Step1/img002.jpeg?v=3357bb71",
      "type": "image",
-     "thumb": "thumbs/Step1/img002.jpg",
+     "thumb": "thumbs/Step1/img002.jpg?v=3357bb71",
      "text": "Tout le monde est prêt pour un voyage de 14 heure environ.",
      "mode": null,
      "lat": 45.71581944444445,
@@ -33,9 +33,9 @@
      "date": "2026-10-20T11:00:20.000Z"
     },
     {
-     "src": "Step1/img003.jpeg",
+     "src": "Step1/img003.jpeg?v=d516a2fb",
      "type": "image",
-     "thumb": "thumbs/Step1/img003.jpg",
+     "thumb": "thumbs/Step1/img003.jpg?v=d516a2fb",
      "text": "Prochaine étape : Londres 🇬🇧",
      "mode": null,
      "lat": null,
@@ -51,9 +51,9 @@
    "mode": null,
    "photos": [
     {
-     "src": "Step2/img003.jpg",
+     "src": "Step2/img003.jpg?v=4f23fad5",
      "type": "image",
-     "thumb": "thumbs/Step2/img003.jpg",
+     "thumb": "thumbs/Step2/img003.jpg?v=4f23fad5",
      "text": "",
      "mode": null,
      "lat": 40.752627777777775,
@@ -61,9 +61,9 @@
      "date": "2026-10-26T08:56:35.000Z"
     },
     {
-     "src": "Step2/img004.jpg",
+     "src": "Step2/img004.jpg?v=5d3aac7d",
      "type": "image",
-     "thumb": "thumbs/Step2/img004.jpg",
+     "thumb": "thumbs/Step2/img004.jpg?v=5d3aac7d",
      "text": "",
      "mode": null,
      "lat": 40.753613888888886,
@@ -71,9 +71,9 @@
      "date": "2026-10-26T09:17:01.000Z"
     },
     {
-     "src": "Step2/img005.jpg",
+     "src": "Step2/img005.jpg?v=7cae917f",
      "type": "image",
-     "thumb": "thumbs/Step2/img005.jpg",
+     "thumb": "thumbs/Step2/img005.jpg?v=7cae917f",
      "text": "",
      "mode": null,
      "lat": 40.753055555555555,
