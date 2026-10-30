@@ -369,7 +369,18 @@
    "name": "Il s'agit de la deuxième plus grande bibliothèque des États-Unis juste derrière celle du Congrès à Washington D.C.",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step7/img001.jpeg?v=824088fb",
+     "type": "image",
+     "thumb": "thumbs/Step7/img001.jpg?v=824088fb",
+     "text": "",
+     "mode": null,
+     "lat": 40.75293333333333,
+     "lng": -73.98087222222222,
+     "date": "2026-10-21T14:10:03.000Z"
+    }
+   ]
   }
  ]
 }
