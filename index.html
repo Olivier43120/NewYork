@@ -45,6 +45,7 @@ body.inview #rail{display:none}
 #viewer{position:fixed;left:0;right:0;bottom:0;top:240px;border-radius:30px 30px 0 0;overflow:hidden;background:#000;z-index:600;transform:translateY(105%);transition:transform .45s cubic-bezier(.2,.8,.2,1);touch-action:none;user-select:none}
 #viewer.on{transform:none}
 #viewer>img,#viewer>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none}
+#viewer>img#bg{inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);filter:blur(28px) brightness(.55) saturate(1.2);transform:translateZ(0)}
 #shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(#0008,transparent 18%,transparent 55%,#000d)}
 #prog{position:absolute;top:14px;left:18px;right:18px;display:flex;gap:8px;z-index:2}
 #prog i{flex:1;height:3px;border-radius:3px;background:#fff5;overflow:hidden}
@@ -106,7 +107,7 @@ body.inview #rail{display:none}
 </header>
 <section id="rail"></section>
 <section id="viewer">
- <img id="ph" alt="" draggable="false"><video id="vd" playsinline hidden></video><div id="shade"></div><div id="prog"></div>
+ <img id="bg" alt="" draggable="false"><img id="ph" alt="" draggable="false"><video id="vd" playsinline hidden></video><div id="shade"></div><div id="prog"></div>
  <div id="cap"><h2 id="t"></h2><p class="m" id="m"></p><div class="d" id="d"></div></div>
  <div id="act"><button id="prev">&#8249;</button><span id="cnt"></span><button id="next">&#8250;</button><span id="vc" hidden><button id="pp"></button><button id="mu"></button></span></div>
 </section>
@@ -200,16 +201,21 @@ function openStep(i,j=0){cur=i;view={i,j};document.body.classList.add('inview');
  setTimeout(()=>{M.invalidateSize();if(pts.length)M.fitBounds(L.latLngBounds(pts.concat(rp)),{...pad(),maxZoom:17,duration:1})},60);
  show(j,true);
 }
-const VD=$('#vd'),PH=$('#ph');let muted=false;
+const VD=$('#vd'),PH=$('#ph'),BG=$('#bg');
+function fit(el,w,h){const b=$('#viewer').getBoundingClientRect();if(!w||!h||!b.width)return;
+ const ia=w/h,ba=b.width/b.height,vis=ia>ba?ba/ia:ia/ba;el.style.objectFit=vis>=.8?'cover':'contain'}
+function refit(){fit(PH,PH.naturalWidth,PH.naturalHeight);fit(VD,VD.videoWidth,VD.videoHeight)}
+PH.addEventListener('load',refit);let muted=false;
 const upd=()=>{$('#mu').textContent=VD.muted?'\u{1F507}':'\u{1F50A}';$('#pp').innerHTML=VD.paused?'&#9654;':'&#10074;&#10074;'};
 function stopVid(){VD.pause();VD.removeAttribute('src');VD.load()}
 function media(p){
+ {const bs=p.thumb||(p.type==='video'?'':p.src);bs?BG.src=bs:BG.removeAttribute('src')}
  if(p.type==='video'){PH.hidden=true;VD.hidden=false;$('#vc').hidden=false;VD.poster=p.thumb||'';VD.muted=muted;VD.src=p.src;
   VD.play().catch(()=>{muted=VD.muted=true;VD.play().catch(()=>{})});upd()}
  else{stopVid();VD.hidden=true;$('#vc').hidden=true;PH.hidden=false;PH.src=p.src}
 }
 ['play','pause','volumechange'].forEach(ev=>VD.addEventListener(ev,upd));
-VD.addEventListener('loadedmetadata',()=>{VD.style.objectFit=VD.videoWidth<VD.videoHeight?'cover':'contain'});
+VD.addEventListener('loadedmetadata',refit);
 $('#pp').onclick=e=>{e.stopPropagation();VD.paused?VD.play():VD.pause()};
 $('#mu').onclick=e=>{e.stopPropagation();VD.muted=!VD.muted;muted=VD.muted;upd()};
 function show(j,first){
@@ -244,7 +250,7 @@ V.addEventListener('pointercancel',()=>{x0=null;drag=false;V.style.transition=''
 (()=>{const SP=$('#split'),R=document.documentElement,KEY='albumSideW';let raf=0;
  const max=()=>Math.max(320,Math.min(innerWidth*.7,innerWidth-320));
  const cur=()=>parseInt(getComputedStyle(R).getPropertyValue('--side'))||440;
- const apply=w=>{w=Math.round(Math.min(max(),Math.max(300,w)));R.style.setProperty('--side',w+'px');cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>M.invalidateSize({animate:false,pan:false}));return w};
+ const apply=w=>{w=Math.round(Math.min(max(),Math.max(300,w)));R.style.setProperty('--side',w+'px');cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{M.invalidateSize({animate:false,pan:false});refit()});return w};
  const save=w=>{try{localStorage.setItem(KEY,w)}catch{}};
  try{const w=+localStorage.getItem(KEY);if(w)apply(w)}catch{}
  SP.addEventListener('pointerdown',e=>{SP.setPointerCapture(e.pointerId);document.body.classList.add('dragging');e.preventDefault()});
@@ -258,3 +264,4 @@ V.addEventListener('pointercancel',()=>{x0=null;drag=false;V.style.transition=''
 </script>
 </body>
 </html>
+
