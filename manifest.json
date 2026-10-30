@@ -1029,7 +1029,63 @@
    "name": "Deuxième jour : la Statue de la Liberté",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step10/img001.jpeg?v=7bfa2cf1",
+     "type": "image",
+     "thumb": "thumbs/Step10/img001.jpg?v=7bfa2cf1",
+     "med": "medium/Step10/img001.jpg?v=7bfa2cf1",
+     "text": "",
+     "mode": null,
+     "lat": 40.68530277777777,
+     "lng": -74.04393888888889,
+     "date": "2026-10-22T11:47:10.000Z"
+    },
+    {
+     "src": "Step10/img002.jpeg?v=6d1cf0ab",
+     "type": "image",
+     "thumb": "thumbs/Step10/img002.jpg?v=6d1cf0ab",
+     "med": "medium/Step10/img002.jpg?v=6d1cf0ab",
+     "text": "",
+     "mode": null,
+     "lat": 40.68575555555555,
+     "lng": -74.04196944444445,
+     "date": "2026-10-22T11:47:47.000Z"
+    },
+    {
+     "src": "Step10/img003.jpeg?v=e8e9434e",
+     "type": "image",
+     "thumb": "thumbs/Step10/img003.jpg?v=e8e9434e",
+     "med": "medium/Step10/img003.jpg?v=e8e9434e",
+     "text": "",
+     "mode": null,
+     "lat": 40.688541666666666,
+     "lng": -74.040025,
+     "date": "2026-10-22T11:49:05.000Z"
+    },
+    {
+     "src": "Step10/img004.jpeg?v=4b7f81cb",
+     "type": "image",
+     "thumb": "thumbs/Step10/img004.jpg?v=4b7f81cb",
+     "med": "medium/Step10/img004.jpg?v=4b7f81cb",
+     "text": "",
+     "mode": null,
+     "lat": 40.687061111111106,
+     "lng": -74.04055833333334,
+     "date": "2026-10-22T11:48:28.000Z"
+    },
+    {
+     "src": "Step10/img005.jpeg?v=b67d1d5c",
+     "type": "image",
+     "thumb": "thumbs/Step10/img005.jpg?v=b67d1d5c",
+     "med": "medium/Step10/img005.jpg?v=b67d1d5c",
+     "text": "",
+     "mode": null,
+     "lat": 40.686141666666664,
+     "lng": -74.04355555555556,
+     "date": "2026-10-22T09:40:02.000Z"
+    }
+   ]
   }
  ]
 }
