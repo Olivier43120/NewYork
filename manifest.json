@@ -1139,6 +1139,17 @@
      "lat": 40.689144444444445,
      "lng": -74.04457222222221,
      "date": "2026-10-22T10:20:35.000Z"
+    },
+    {
+     "src": "Step10/img011.jpeg?v=2f0aabc9",
+     "type": "image",
+     "thumb": "thumbs/Step10/img011.jpg?v=2f0aabc9",
+     "med": "medium/Step10/img011.jpg?v=2f0aabc9",
+     "text": "",
+     "mode": null,
+     "lat": 40.68915277777777,
+     "lng": -74.04431944444444,
+     "date": "2026-10-22T10:28:45.000Z"
     }
    ]
   }
