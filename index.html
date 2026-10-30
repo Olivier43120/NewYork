@@ -93,6 +93,8 @@ body.inview #rail{display:none}
 #cvt p{font-size:19px;color:#e4e9ee;margin:10px 0 0}
 #cvb{display:inline-block;margin-top:26px;padding:14px 26px;border-radius:30px;background:#fff;color:var(--night);font-weight:600;animation:bob 2.2s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-4px)}}
+#err{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3000;max-width:min(520px,90vw);background:#12293d;border:1px solid #24465f;border-radius:18px;padding:18px 22px;line-height:1.55;text-align:center;box-shadow:0 8px 30px #0008}
+#err a{color:var(--blue)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}#cvb{animation:none}}
 </style>
 </head>
@@ -106,6 +108,7 @@ body.inview #rail{display:none}
  <button class="rb" id="lay" aria-label="Changer de fond de carte"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg></button>
 </header>
 <section id="rail"></section>
+<div id="err" hidden></div>
 <section id="viewer">
  <img id="bg" alt="" draggable="false"><img id="ph" alt="" draggable="false"><video id="vd" playsinline hidden></video><div id="shade"></div><div id="prog"></div>
  <div id="cap"><h2 id="t"></h2><p class="m" id="m"></p><div class="d" id="d"></div></div>
@@ -151,11 +154,13 @@ function route(pts,modes){const out=[];
    L.marker(PM.unproject(at(t)),{interactive:false,keyboard:false,zIndexOffset:-500,icon:L.divIcon({className:'plane',iconSize:[26,26],iconAnchor:[13,13],html:`<div style="transform:rotate(${rot}deg)">${PLANE}</div>`})}).addTo(G)}
  }return out}
 
-fetch('manifest.json').then(r=>r.json()).then(init).catch(()=>{$('#place').textContent='manifest.json introuvable'});
+function fail(msg){const e=$('#err');e.hidden=false;e.innerHTML='<b></b><br><small>Aide : <a href="tuto.html#depannage">tutoriel, section Dépannage</a></small>';e.firstChild.textContent=msg}
+fetch('manifest.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error('manifest.json introuvable (erreur HTTP '+r.status+'). L’action GitHub a-t-elle bien tourné ?');return r.json()})
+ .then(init).catch(e=>{console.error(e);fail(/^manifest/.test(e.message)?e.message:'Erreur dans l’album : '+e.message)});
 
 function init(m){
  steps=m.steps.filter(s=>s.photos.length);
- steps.forEach(s=>{let last=s.photos.find(loc);s.photos.forEach(p=>{if(p.lat==null&&last)[p.lat,p.lng]=last;else if(p.lat!=null)last=[p.lat,p.lng]});s.loc=s.photos.find(loc)&&loc(s.photos.find(loc))});
+ steps.forEach(s=>{let last=s.photos.find(loc);last=last&&loc(last);s.photos.forEach(p=>{if(p.lat==null&&last)[p.lat,p.lng]=last;else if(p.lat!=null)last=[p.lat,p.lng]});s.loc=s.photos.find(loc)&&loc(s.photos.find(loc))});
  document.title=m.title||'Album';$('#h1').textContent=$('#place').textContent=m.title||'Mon voyage';
  $('#by').textContent=m.author||'';$('#who').textContent=m.author||'';
  // statistiques
@@ -264,4 +269,3 @@ V.addEventListener('pointercancel',()=>{x0=null;drag=false;V.style.transition=''
 </script>
 </body>
 </html>
-
