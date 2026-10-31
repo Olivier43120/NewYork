@@ -29,7 +29,7 @@ html,body{height:100%;background:var(--night);color:var(--ink);font-family:Outfi
 body.inview #back{visibility:visible}
 #ttl{text-align:center;text-shadow:0 1px 8px #000}
 #ttl small{display:block;font-size:13px;font-weight:500;opacity:.9}
-#ttl b{font-size:24px;font-weight:600}
+#ttl b{font-size:24px;font-weight:500}
 /* rail de steps */
 #rail{position:fixed;left:0;right:0;bottom:calc(28px + env(safe-area-inset-bottom));height:200px;display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 calc(50% - 130px);z-index:500;scrollbar-width:none}
 #rail::-webkit-scrollbar{display:none}
@@ -38,7 +38,7 @@ body.inview #back{visibility:visible}
 .card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .card i{position:absolute;inset:0;background:linear-gradient(transparent 40%,#000b)}
 .card div{position:absolute;left:18px;right:18px;bottom:14px}
-.card b{display:block;font-size:21px;font-weight:600;line-height:1.15}
+.card b{display:block;font-size:21px;font-weight:500;line-height:1.15}
 .card small{color:var(--mut);font-size:14px}
 body.inview #rail{display:none}
 /* visionneuse */
@@ -51,12 +51,13 @@ body.inview #rail{display:none}
 .sl.old{opacity:1;z-index:1}.sl.on{opacity:1;z-index:2}
 .sl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none}
 .sl img.bg{inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);filter:blur(28px) brightness(.55) saturate(1.2);transform:translateZ(0)}
+b b,#cap h2 b,#ttl b b{font-weight:700}
 #shade{position:absolute;z-index:4;inset:0;pointer-events:none;background:linear-gradient(#0008,transparent 16%,transparent 64%,#000c)}
 #prog{position:absolute;top:14px;left:18px;right:18px;display:flex;gap:8px;z-index:6}
 #prog i{flex:1;height:3px;border-radius:3px;background:#fff5;overflow:hidden}
 #prog i.d:after{content:"";display:block;height:100%;background:#fff}
 #cap{position:absolute;z-index:5;left:20px;right:20px;bottom:calc(20px + env(safe-area-inset-bottom));pointer-events:none}
-#cap h2{font-size:22px;font-weight:600;line-height:1.15;text-shadow:0 2px 12px #000}
+#cap h2{font-size:22px;font-weight:500;line-height:1.15;text-shadow:0 2px 12px #000}
 #cap p.m{margin:6px 0 8px;font-size:13px;font-weight:500;opacity:.92}
 #cap .d p{margin:0 0 .6em}#cap .d b{font-weight:700}#cap .d{color:#e4e9ee;font-size:15px;line-height:1.5;max-width:60ch}
 #vc{position:absolute;top:32px;right:16px;display:flex;gap:8px;z-index:7}
@@ -78,7 +79,7 @@ body.inview #rail{display:none}
  .row{display:flex;gap:14px;align-items:center;padding:10px;border-radius:18px;cursor:pointer}
  .row:hover,.row.on{background:var(--btn)}
  .row img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #fff}
- .row b{display:block;font-weight:600}.row small{color:var(--mut)}
+ .row b{display:block;font-weight:500}.row small{color:var(--mut)}
  #split{display:block;position:fixed;top:0;bottom:0;left:calc(var(--side) - 6px);width:12px;cursor:col-resize;z-index:700;touch-action:none;outline:none}
  #split:after{content:"";position:absolute;left:4px;top:50%;width:4px;height:56px;margin-top:-28px;border-radius:4px;background:#ffffffaa;opacity:0;transition:opacity .2s}
  #split:hover:after,#split:focus-visible:after,body.dragging #split:after{opacity:1}
@@ -139,6 +140,7 @@ const md=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').re
 const VPH='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10" fill="#1b3a55"/><path d="M4 3.2v3.6L7 5z" fill="#fff"/></svg>');
 const th=p=>p.thumb||(p.type==='video'?VPH:p.src);
 const lbl=s=>{const v=s.photos.filter(p=>p.type==='video').length,n=s.photos.length-v;return [n&&n+' photo'+(n>1?'s':''),v&&v+' vidéo'+(v>1?'s':'')].filter(Boolean).join(' · ')};
+const mdi=t=>md(t||'').replace(/^<p>|<\/p>$/g,'').replace(/<\/p><p>/g,' ');
 const loc=p=>p.lat!=null?[p.lat,p.lng]:null;
 const km=(a,b)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(b[0]-a[0])/2)**2+Math.cos(r(a[0]))*Math.cos(r(b[0]))*Math.sin(r(b[1]-a[1])/2)**2;return 12742*Math.asin(Math.sqrt(h))};
 const pad=()=>{const h=innerHeight;
@@ -178,8 +180,8 @@ function init(m){
  const all=steps.flatMap(s=>s.photos),pts=all.filter(loc).map(loc);let d=0;for(let i=1;i<pts.length;i++)d+=km(pts[i-1],pts[i]);
  const days=new Set(all.map(p=>(p.date||'').slice(0,10)).filter(Boolean)).size;
  $('#stats').innerHTML=[[steps.length,'steps'],[all.length,all.some(p=>p.type==='video')?'médias':'photos'],[Math.round(d).toLocaleString('fr-FR'),'km'],[days||'–','jours']].map(([a,b])=>`<div><b>${a}</b><small>${b}</small></div>`).join('');
- $('#list').innerHTML=steps.map((s,i)=>`<div class="row" data-i="${i}"><img src="${th(s.photos[0])}" alt=""><div><b>${s.name}</b><small>${fmt(s.photos[0].date)} · ${lbl(s)}</small></div></div>`).join('');
- $('#rail').innerHTML=steps.map((s,i)=>`<article class="card" data-i="${i}"><img src="${th(s.photos[0])}" alt="" loading="lazy"><i></i><div><b>${s.name}</b><small>${fmt(s.photos[0].date)} · ${lbl(s)}</small></div></article>`).join('');
+ $('#list').innerHTML=steps.map((s,i)=>`<div class="row" data-i="${i}"><img src="${th(s.photos[0])}" alt=""><div><b>${mdi(s.name)}</b><small>${fmt(s.photos[0].date)} · ${lbl(s)}</small></div></div>`).join('');
+ $('#rail').innerHTML=steps.map((s,i)=>`<article class="card" data-i="${i}"><img src="${th(s.photos[0])}" alt="" loading="lazy"><i></i><div><b>${mdi(s.name)}</b><small>${fmt(s.photos[0].date)} · ${lbl(s)}</small></div></article>`).join('');
  $('#list').onclick=e=>{const r=e.target.closest('.row');if(r)openStep(+r.dataset.i)};
  $('#rail').onclick=e=>{const c=e.target.closest('.card');if(c)openStep(+c.dataset.i)};
  let t;$('#rail').onscroll=()=>{clearTimeout(t);t=setTimeout(()=>{const r=$('#rail').getBoundingClientRect(),mid=r.left+r.width/2;let b=0,bd=1e9;
@@ -205,7 +207,7 @@ function homeMap(fit){
 }
 function setActive(i,scroll){cur=i;
  document.querySelectorAll('.card,.row').forEach(e=>e.classList.toggle('on',+e.dataset.i===i));
- $('#place').textContent=steps[i].name;
+ $('#place').innerHTML=mdi(steps[i].name);
  if(scroll)document.querySelector(`.card[data-i="${i}"]`).scrollIntoView({inline:'center',behavior:'smooth',block:'nearest'});
  homeMap(true);
 }
@@ -248,7 +250,7 @@ $('#mu').onclick=e=>{e.stopPropagation();VD.muted=!VD.muted;muted=VD.muted;upd()
 function show(j,first){
  const s=steps[view.i];
  j=Math.max(0,Math.min(j,s.photos.length-1));view.j=j;const p=s.photos[j];
- media(p);pre(s.photos[j+1]);pre(s.photos[j+2]);pre(s.photos[j-1]);$('#t').textContent=s.name;
+ media(p);pre(s.photos[j+1]);pre(s.photos[j+2]);pre(s.photos[j-1]);$('#t').innerHTML=mdi(s.name);
  $('#m').textContent=[fmt(p.date),p.lat==null?'':p.lat.toFixed(3)+'°, '+p.lng.toFixed(3)+'°'].filter(Boolean).join('  ·  ');
  $('#d').innerHTML=md(p.text||(j===0?s.desc:'')||'');
  [...$('#prog').children].forEach((e,k)=>e.className=k<=j?'d':'');
