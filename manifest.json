@@ -1680,6 +1680,28 @@
      "lat": 40.70673055555556,
      "lng": -74.0109638888889,
      "date": "2026-10-23T14:36:41.000Z"
+    },
+    {
+     "src": "Step13/img006.jpeg?v=2e9a37a4",
+     "type": "image",
+     "thumb": "thumbs/Step13/img006.jpg?v=2e9a37a4",
+     "med": "medium/Step13/img006.jpg?v=2e9a37a4",
+     "text": "",
+     "mode": null,
+     "lat": 40.70677222222223,
+     "lng": -74.01029166666666,
+     "date": "2026-10-23T14:45:21.000Z"
+    },
+    {
+     "src": "Step13/img007.jpeg?v=189c4a88",
+     "type": "image",
+     "thumb": "thumbs/Step13/img007.jpg?v=189c4a88",
+     "med": null,
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": null
     }
    ]
   }
