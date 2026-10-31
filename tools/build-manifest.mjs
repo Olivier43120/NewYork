@@ -5,7 +5,8 @@ let sharp = null; try { sharp = (await import('sharp')).default; } catch { conso
 const has = c => { try { return spawnSync(c, ['-version']).status === 0; } catch { return false; } };
 const FF = has('ffmpeg') && has('ffprobe');
 if (!FF) console.warn('ffmpeg absent : vidéos sans image d\'aperçu ni GPS/date automatiques');
-const root = process.argv[2] || '.';
+const base0 = process.argv[2] || '.';
+let root = base0, cachePath, cache, hashes;
 const nat = (a, b) => a.localeCompare(b, undefined, { numeric: true });
 const isImg = f => /\.(jpe?g|png|webp|heic)$/i.test(f);
 const isVid = f => /\.(mp4|m4v|mov|webm|ogv)$/i.test(f);
@@ -29,9 +30,6 @@ function parse(raw) {
 }
 const okFile = f => fs.existsSync(f) && fs.statSync(f).size > 0;
 // Cache : empreinte (sha1) de chaque original, pour recréer une miniature quand la photo change
-const cachePath = path.join(root, 'thumbs', 'cache.json');
-let cache = {}; try { cache = JSON.parse(fs.readFileSync(cachePath, 'utf8')); } catch {}
-const hashes = {};
 const hashOf = f => crypto.createHash('sha1').update(fs.readFileSync(f)).digest('hex');
 const full = rel => (hashes[rel] ??= hashOf(path.join(root, rel)));
 const vh = rel => full(rel).slice(0, 8);           // suffixe ?v=... : force le navigateur à recharger
@@ -102,6 +100,9 @@ function probe(file) {
   }
   return out;
 }
+async function build(r) {
+root = r; cachePath = path.join(root, 'thumbs', 'cache.json'); hashes = {};
+cache = {}; try { cache = JSON.parse(fs.readFileSync(cachePath, 'utf8')); } catch {}
 let album = {}; try { album = JSON.parse(fs.readFileSync(path.join(root, 'album.json'), 'utf8')); } catch {}
 const cover = fs.readdirSync(root).find(f => /^(cover|couverture|garde)\.(jpe?g|png|webp)$/i.test(f));
 if (cover) console.log('Page de garde :', cover);
@@ -155,3 +156,15 @@ if (Object.keys(cache).length) { fs.mkdirSync(path.join(root, 'thumbs'), { recur
 fs.writeFileSync(path.join(root, 'manifest.json'), JSON.stringify({
   title: album.title, author: album.author, subtitle: album.subtitle,
   cover: cover ? { src: cover + '?v=' + vh(cover) } : null, steps }, null, 1));
+return { title: album.title, author: album.author, subtitle: album.subtitle,
+  cover: cover || steps.flatMap(st => st.photos).map(p => p.thumb || p.src).find(Boolean)?.split('?')[0] };
+}
+// Un carnet = un dossier contenant album.json (la racine elle-même peut en être un)
+const isAlbum = d => fs.existsSync(path.join(d, 'album.json'));
+const roots = isAlbum(base0) ? [base0] : [];
+for (const e of fs.readdirSync(base0, { withFileTypes: true }))
+  if (e.isDirectory() && !/^(\.|node_modules$|thumbs$|medium$|tools$)/.test(e.name) && !/^step\d+/i.test(e.name) && isAlbum(path.join(base0, e.name))) roots.push(path.join(base0, e.name));
+if (!roots.length) roots.push(base0);
+const list = [];
+for (const r of roots) { console.log('=== Carnet :', r); const i = await build(r); if (r !== base0) list.push({ dir: path.basename(r), ...i }); }
+if (list.length) fs.writeFileSync(path.join(base0, 'albums.json'), JSON.stringify(list, null, 1));
