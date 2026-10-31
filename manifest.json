@@ -1710,7 +1710,74 @@
    "name": "Soir du troisième jour : la comédie musicale **Le Roi Lion** à Broadway, à côté du quartier de Time Square.",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step14/img001.jpeg?v=4f747b2b",
+     "type": "image",
+     "thumb": "thumbs/Step14/img001.jpg?v=4f747b2b",
+     "med": null,
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-24T11:25:25.000Z"
+    },
+    {
+     "src": "Step14/img002.jpeg?v=2e8932ac",
+     "type": "image",
+     "thumb": "thumbs/Step14/img002.jpg?v=2e8932ac",
+     "med": null,
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-24T11:25:25.000Z"
+    },
+    {
+     "src": "Step14/img003.jpeg?v=8ab17f29",
+     "type": "image",
+     "thumb": "thumbs/Step14/img003.jpg?v=8ab17f29",
+     "med": null,
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-24T11:25:25.000Z"
+    },
+    {
+     "src": "Step14/img004.jpeg?v=f6b018ac",
+     "type": "image",
+     "thumb": "thumbs/Step14/img004.jpg?v=f6b018ac",
+     "med": "medium/Step14/img004.jpg?v=f6b018ac",
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-23T18:30:01.000Z"
+    },
+    {
+     "src": "Step14/img005.jpeg?v=052a29a1",
+     "type": "image",
+     "thumb": "thumbs/Step14/img005.jpg?v=052a29a1",
+     "med": "medium/Step14/img005.jpg?v=052a29a1",
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-23T18:31:24.000Z"
+    },
+    {
+     "src": "Step14/img006.jpeg?v=1117e595",
+     "type": "image",
+     "thumb": "thumbs/Step14/img006.jpg?v=1117e595",
+     "med": "medium/Step14/img006.jpg?v=1117e595",
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-23T21:44:30.000Z"
+    }
+   ]
   }
  ]
 }
