@@ -1551,6 +1551,72 @@
      "lat": 40.702336111111116,
      "lng": -73.99204166666667,
      "date": "2026-10-23T12:15:38.000Z"
+    },
+    {
+     "src": "Step12/img017.jpeg?v=0b1acd8e",
+     "type": "image",
+     "thumb": "thumbs/Step12/img017.jpg?v=0b1acd8e",
+     "med": "medium/Step12/img017.jpg?v=0b1acd8e",
+     "text": "",
+     "mode": null,
+     "lat": 40.70332777777778,
+     "lng": -73.99328611111112,
+     "date": "2026-10-23T12:23:16.000Z"
+    },
+    {
+     "src": "Step12/img018.jpeg?v=97185903",
+     "type": "image",
+     "thumb": "thumbs/Step12/img018.jpg?v=97185903",
+     "med": "medium/Step12/img018.jpg?v=97185903",
+     "text": "",
+     "mode": null,
+     "lat": 40.700947222222226,
+     "lng": -73.99681111111111,
+     "date": "2026-10-23T11:37:09.000Z"
+    },
+    {
+     "src": "Step12/img019.jpeg?v=577e9e49",
+     "type": "image",
+     "thumb": "thumbs/Step12/img019.jpg?v=577e9e49",
+     "med": "medium/Step12/img019.jpg?v=577e9e49",
+     "text": "",
+     "mode": null,
+     "lat": 40.700694444444444,
+     "lng": -73.99408611111112,
+     "date": "2026-10-23T11:58:24.000Z"
+    },
+    {
+     "src": "Step12/img020.jpeg?v=480fa574",
+     "type": "image",
+     "thumb": "thumbs/Step12/img020.jpg?v=480fa574",
+     "med": "medium/Step12/img020.jpg?v=480fa574",
+     "text": "",
+     "mode": null,
+     "lat": 40.70066111111112,
+     "lng": -73.99378333333334,
+     "date": "2026-10-23T11:58:58.000Z"
+    },
+    {
+     "src": "Step12/img021.jpeg?v=a0620585",
+     "type": "image",
+     "thumb": "thumbs/Step12/img021.jpg?v=a0620585",
+     "med": "medium/Step12/img021.jpg?v=a0620585",
+     "text": "",
+     "mode": null,
+     "lat": 40.70028611111111,
+     "lng": -73.99251666666667,
+     "date": "2026-10-23T12:03:39.000Z"
+    },
+    {
+     "src": "Step12/img022.jpeg?v=9377cb0c",
+     "type": "image",
+     "thumb": "thumbs/Step12/img022.jpg?v=9377cb0c",
+     "med": "medium/Step12/img022.jpg?v=9377cb0c",
+     "text": "",
+     "mode": null,
+     "lat": 40.703975,
+     "lng": -73.98971666666667,
+     "date": "2026-10-23T10:37:31.000Z"
     }
    ]
   }
