@@ -2,7 +2,7 @@ name: Générer le manifeste et les miniatures
 on:
   push:
     branches: [main]
-    paths-ignore: ['manifest.json', 'thumbs/**', 'medium/**']
+    paths-ignore: ['manifest.json', '**/manifest.json', 'albums.json', '**/thumbs/**', '**/medium/**']
   workflow_dispatch:
 permissions:
   contents: write
@@ -26,8 +26,8 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          mkdir -p thumbs medium
-          git add manifest.json thumbs medium
+          printf 'node_modules\npackage.json\npackage-lock.json\n' >> .git/info/exclude
+          git add -A
           if ! git diff --cached --quiet; then
             git commit -m "maj manifest et miniatures"
             for i in 1 2 3; do
