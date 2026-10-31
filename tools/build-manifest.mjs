@@ -141,6 +141,15 @@ for (const d of dirs) {
   const nv = photos.filter(p => p.type === 'video').length;
   console.log(d, '-', name, '-', photos.length - nv, 'photos,', nv, 'vidéos,', photos.filter(p => p.lat != null).length, 'géolocalisés');
 }
+// Nettoyage : miniatures / versions allégées dont la photo n'existe plus
+if (sharp) {
+  const used = new Set(steps.flatMap(st => st.photos.flatMap(p => [p.thumb, p.med])).filter(Boolean).map(x => x.split('?')[0]));
+  const walk = d => fs.existsSync(d) ? fs.readdirSync(d, { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]) : [];
+  for (const f of [...walk(path.join(root, 'thumbs')), ...walk(path.join(root, 'medium'))]) {
+    const rel = path.relative(root, f).split(path.sep).join('/');
+    if (rel !== 'thumbs/cache.json' && !used.has(rel)) fs.rmSync(f);
+  }
+}
 for (const k of Object.keys(cache)) if (!fs.existsSync(path.join(root, k.replace(/^m:/, '')))) delete cache[k];
 if (Object.keys(cache).length) { fs.mkdirSync(path.join(root, 'thumbs'), { recursive: true }); fs.writeFileSync(cachePath, JSON.stringify(cache, null, 1)); }
 fs.writeFileSync(path.join(root, 'manifest.json'), JSON.stringify({
