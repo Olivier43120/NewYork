@@ -1158,7 +1158,63 @@
    "name": "Deuxième jour : suite dans le secteur du World Trade Center",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step11/img001.jpeg?v=f60c7d55",
+     "type": "image",
+     "thumb": "thumbs/Step11/img001.jpg?v=f60c7d55",
+     "med": "medium/Step11/img001.jpg?v=f60c7d55",
+     "text": "",
+     "mode": null,
+     "lat": 40.70536666666667,
+     "lng": -74.01696111111112,
+     "date": "2026-10-22T13:58:50.000Z"
+    },
+    {
+     "src": "Step11/img002.jpeg?v=9e83ce06",
+     "type": "image",
+     "thumb": "thumbs/Step11/img002.jpg?v=9e83ce06",
+     "med": "medium/Step11/img002.jpg?v=9e83ce06",
+     "text": "",
+     "mode": null,
+     "lat": 40.71360833333333,
+     "lng": -74.01241388888889,
+     "date": "2026-10-22T14:16:24.000Z"
+    },
+    {
+     "src": "Step11/img003.jpeg?v=6e159010",
+     "type": "image",
+     "thumb": "thumbs/Step11/img003.jpg?v=6e159010",
+     "med": "medium/Step11/img003.jpg?v=6e159010",
+     "text": "",
+     "mode": null,
+     "lat": 40.71255,
+     "lng": -74.015075,
+     "date": "2026-10-22T14:11:59.000Z"
+    },
+    {
+     "src": "Step11/img004.jpeg?v=6ac7cf69",
+     "type": "image",
+     "thumb": "thumbs/Step11/img004.jpg?v=6ac7cf69",
+     "med": "medium/Step11/img004.jpg?v=6ac7cf69",
+     "text": "",
+     "mode": null,
+     "lat": 40.712588888888895,
+     "lng": -74.01473888888889,
+     "date": "2026-10-22T14:11:50.000Z"
+    },
+    {
+     "src": "Step11/img005.jpeg?v=f704163b",
+     "type": "image",
+     "thumb": "thumbs/Step11/img005.jpg?v=f704163b",
+     "med": "medium/Step11/img005.jpg?v=f704163b",
+     "text": "",
+     "mode": null,
+     "lat": 40.71208611111111,
+     "lng": -74.01189444444445,
+     "date": "2026-10-22T18:46:22.000Z"
+    }
+   ]
   }
  ]
 }
