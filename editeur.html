@@ -131,16 +131,52 @@ async function newCarnet(){const n=dirName('Nom du dossier du nouveau carnet (ex
  const v=viewerSha();if(!v){alert('Visionneuse introuvable (index.html ou viewer.html).');return}
  try{await commit([{path:n+'/index.html',sha:v},{path:n+'/album.json',text:JSON.stringify({title:n,author:A.author||'',subtitle:''},null,1)}],'Nouveau carnet '+n,1);P=n+'/';S=[];await init();$('#st').textContent='Carnet créé. Ajoutez vos steps, puis enregistrez.'}
  catch(e){$('#st').textContent='Échec : '+e.message}}
-async function migrate(){const n=dirName('Dossier de destination pour ce carnet (ex. NewYork) :');if(!n)return;
- if(!confirm('Déplacer tout le carnet actuel dans « '+n+' » ? La page d’accueil du site deviendra la liste des carnets.'))return;
- try{$('#st').textContent='Préparation…';
-  const ref=await api('/git/ref/heads/'+B),cm=await api('/git/commits/'+ref.object.sha),rt=await api('/git/trees/'+cm.tree.sha);
-  const keep=x=>/^(Step\d+|thumbs|medium)$/i.test(x)||/^(album|manifest)\.json$|^index\.html$|^(cover|couverture|garde)\.\w+$/i.test(x),E=[];
-  if(rt.tree.some(x=>x.path===n)){alert('Ce dossier existe déjà.');return}
-  for(const x of rt.tree){if(!keep(x.path))continue;const t=x.type==='tree';E.push({path:n+'/'+x.path,sha:x.sha,tree:t});if(x.path!=='index.html')E.push({path:x.path,del:1,tree:t})}
-  const ix=rt.tree.find(x=>x.path==='index.html');if(ix)E.push({path:'viewer.html',sha:ix.sha});E.push({path:'index.html',text:HOME});
-  await commit(E,'Déplacement du carnet dans '+n,1);P=n+'/';S=[];await init();$('#st').textContent='Carnet déplacé. Patientez 1 à 3 minutes.'}
- catch(e){$('#st').textContent='Échec : '+e.message}}
+async function migrate(){
+  const n = dirName('Dossier de destination pour ce carnet (ex. NewYork) :');
+  if(!n) return;
+  if(!confirm('Déplacer tout le carnet actuel dans « '+n+' » ? La page d’accueil du site deviendra la liste des carnets.')) return;
+  try {
+    $('#st').textContent = 'Préparation…';
+    const ref = await api('/git/ref/heads/' + B);
+    const cm = await api('/git/commits/' + ref.object.sha);
+    
+    // Récupération de la racine uniquement (sans ?recursive=1) pour éviter de saturer la requête
+    const rt = await api('/git/trees/' + cm.tree.sha);
+    
+    const keep = x => /^(Step\d+|thumbs|medium)$/i.test(x) || /^(album|manifest)\.json$|^index\.html$|^(cover|couverture|garde)\.\w+$/i.test(x);
+    const E = [];
+    
+    if (rt.tree.some(x => x.path === n)) {
+      alert('Ce dossier existe déjà.');
+      return;
+    }
+    
+    for (const x of rt.tree) {
+      if (!keep(x.path)) continue;
+      const t = x.type === 'tree';
+      // Déplacement dans le nouveau dossier NewYork/
+      E.push({ path: n + '/' + x.path, sha: x.sha, tree: t });
+      // Suppression de l'élément d'origine à la racine (sauf index.html)
+      if (x.path !== 'index.html') {
+        E.push({ path: x.path, del: 1, tree: t });
+      }
+    }
+    
+    const ix = rt.tree.find(x => x.path === 'index.html');
+    if (ix) E.push({ path: 'viewer.html', sha: ix.sha });
+    E.push({ path: 'index.html', text: HOME });
+    
+    await commit(E, 'Déplacement du carnet dans ' + n, 1);
+    P = n + '/';
+    S = [];
+    await init();
+    $('#st').textContent = 'Carnet déplacé avec succès ! Patientez 1 à 3 minutes.';
+  } catch(e) {
+    busy = 0;
+    upd();
+    $('#st').textContent = 'Échec : ' + e.message;
+  }
+}
 $('#mig').onclick=migrate;
 $('#al').onchange=async e=>{if(e.target.value==='+'){e.target.value=P;return newCarnet()}
  if(dirty()&&!confirm('Abandonner les modifications non enregistrées ?')){e.target.value=P;return}P=e.target.value;S=[];await init()};
