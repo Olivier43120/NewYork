@@ -1386,7 +1386,63 @@
    "name": "Troisième journée : visite du borought de Brooklyn",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step12/img001.jpeg?v=3cd346ab",
+     "type": "image",
+     "thumb": "thumbs/Step12/img001.jpg?v=3cd346ab",
+     "med": "medium/Step12/img001.jpg?v=3cd346ab",
+     "text": "",
+     "mode": null,
+     "lat": 40.70295277777778,
+     "lng": -73.98868611111111,
+     "date": "2026-10-23T10:09:00.000Z"
+    },
+    {
+     "src": "Step12/img002.jpeg?v=09ff445c",
+     "type": "image",
+     "thumb": "thumbs/Step12/img002.jpg?v=09ff445c",
+     "med": "medium/Step12/img002.jpg?v=09ff445c",
+     "text": "",
+     "mode": null,
+     "lat": 40.70351666666667,
+     "lng": -73.989625,
+     "date": "2026-10-23T10:13:44.000Z"
+    },
+    {
+     "src": "Step12/img003.jpeg?v=e0b8899f",
+     "type": "image",
+     "thumb": "thumbs/Step12/img003.jpg?v=e0b8899f",
+     "med": "medium/Step12/img003.jpg?v=e0b8899f",
+     "text": "",
+     "mode": null,
+     "lat": 40.703808333333335,
+     "lng": -73.98963055555555,
+     "date": "2026-10-23T10:28:17.000Z"
+    },
+    {
+     "src": "Step12/img004.jpeg?v=c886fc6a",
+     "type": "image",
+     "thumb": "thumbs/Step12/img004.jpg?v=c886fc6a",
+     "med": "medium/Step12/img004.jpg?v=c886fc6a",
+     "text": "",
+     "mode": null,
+     "lat": 40.70393333333334,
+     "lng": -73.99106666666667,
+     "date": "2026-10-23T10:49:26.000Z"
+    },
+    {
+     "src": "Step12/img005.jpeg?v=58199379",
+     "type": "image",
+     "thumb": "thumbs/Step12/img005.jpg?v=58199379",
+     "med": "medium/Step12/img005.jpg?v=58199379",
+     "text": "",
+     "mode": null,
+     "lat": 40.70312222222223,
+     "lng": -73.98959444444445,
+     "date": "2026-10-23T10:12:36.000Z"
+    }
+   ]
   }
  ]
 }
