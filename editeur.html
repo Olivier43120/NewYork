@@ -47,7 +47,7 @@ let C={},T=new Map,L=new Map,P='',AL=[],S=[],A={},man=null,cover=null,adirty=0,b
 const u=location.host.endsWith('.github.io')?[location.host.split('.')[0],location.pathname.split('/')[1]||'']:['',''];
 try{C=JSON.parse(localStorage.ed||sessionStorage.ed||'{}')}catch{}
 $('#o').value=C.o||u[0];$('#r').value=C.r||u[1];$('#t').value=C.t||'';
-async function api(p,o={}){const r=await fetch(`https://api.github.com/repos/${C.o}/${C.r}${p}`,{method:o.method,headers:{Authorization:'Bearer '+C.t,Accept:'application/vnd.github+json'},body:o.body&&JSON.stringify(o.body)});
+async function api(p,o={}){const r=await fetch(`https://api.github.com/repos/${C.o}/${C.r}${p}`,{method:o.method,headers:{Authorization:'Bearer '+C.t,Accept:'application/vnd.github+json'},body:o.body&&JSON.stringify(o.body)}).catch(e=>{throw new Error('réseau sur '+p.split('?')[0]+' – '+e.message)});
  if(!r.ok)throw new Error(r.status+' '+((await r.json().catch(()=>({}))).message||''));return r.json()}
 async function txt(p){const s=L.get(p);if(!s)return'';const b=await api('/git/blobs/'+s);return new TextDecoder().decode(Uint8Array.from(atob(b.content.replace(/\n/g,'')),c=>c.charCodeAt(0)))}
 function parse(raw){let mode='',gps='';const k=raw.split(/\r?\n/).filter(l=>{const g=l.match(/^\s*(?:gps|position)\s*:\s*(.+)/i);if(g){gps=g[1].trim();return 0}
@@ -113,11 +113,11 @@ $('#sv').onclick=async()=>{const E=[],del=p=>L.has(p)&&E.push({path:p,del:1});bu
  try{await commit(E,'Édition via l’éditeur d’album');busy=0;await init();$('#st').textContent='Enregistré. L’album se met à jour dans 1 à 3 minutes.'}
  catch(e){busy=0;upd();$('#st').textContent='Échec : '+e.message}};
 async function commit(E,msg,abs){let k=0;const tree=[],pre=abs?'':P;
- for(const e of E){$('#st').textContent=`Envoi ${++k}/${E.length}…`;
-  if(e.del){tree.push({path:pre+e.path,mode:'100644',type:'blob',sha:null});continue}
+ for(const e of E){$('#st').textContent=`Envoi ${++k}/${E.length}…`;const T0=e.tree?{mode:'040000',type:'tree'}:{mode:'100644',type:'blob'};
+  if(e.del){tree.push({path:pre+e.path,...T0,sha:null});continue}
   let sha=e.sha;if(!sha){const c=e.file?await b64(e.file):btoa(String.fromCharCode(...new TextEncoder().encode(e.text)));
    sha=(await api('/git/blobs',{method:'POST',body:{content:c,encoding:'base64'}})).sha}
-  tree.push({path:pre+e.path,mode:'100644',type:'blob',sha})}
+  tree.push({path:pre+e.path,...T0,sha})}
  const ref=await api('/git/ref/heads/'+B),cm=await api('/git/commits/'+ref.object.sha);
  const nt=await api('/git/trees',{method:'POST',body:{base_tree:cm.tree.sha,tree}});
  const nc=await api('/git/commits',{method:'POST',body:{message:msg,tree:nt.sha,parents:[ref.object.sha]}});
@@ -133,10 +133,13 @@ async function newCarnet(){const n=dirName('Nom du dossier du nouveau carnet (ex
  catch(e){$('#st').textContent='Échec : '+e.message}}
 async function migrate(){const n=dirName('Dossier de destination pour ce carnet (ex. NewYork) :');if(!n)return;
  if(!confirm('Déplacer tout le carnet actuel dans « '+n+' » ? La page d’accueil du site deviendra la liste des carnets.'))return;
- const keep=p=>/^(Step\d+\/|thumbs\/|medium\/)/i.test(p)||/^(album|manifest)\.json$|^index\.html$|^(cover|couverture|garde)\.\w+$/i.test(p),E=[];
- for(const[p,h]of T){if(!keep(p))continue;E.push({path:n+'/'+p,sha:h});if(p!=='index.html')E.push({path:p,del:1})}
- E.push({path:'viewer.html',sha:T.get('index.html')},{path:'index.html',text:HOME});
- try{await commit(E,'Déplacement du carnet dans '+n,1);P=n+'/';S=[];await init();$('#st').textContent='Carnet déplacé. Patientez 1 à 3 minutes.'}
+ try{$('#st').textContent='Préparation…';
+  const ref=await api('/git/ref/heads/'+B),cm=await api('/git/commits/'+ref.object.sha),rt=await api('/git/trees/'+cm.tree.sha);
+  const keep=x=>/^(Step\d+|thumbs|medium)$/i.test(x)||/^(album|manifest)\.json$|^index\.html$|^(cover|couverture|garde)\.\w+$/i.test(x),E=[];
+  if(rt.tree.some(x=>x.path===n)){alert('Ce dossier existe déjà.');return}
+  for(const x of rt.tree){if(!keep(x.path))continue;const t=x.type==='tree';E.push({path:n+'/'+x.path,sha:x.sha,tree:t});if(x.path!=='index.html')E.push({path:x.path,del:1,tree:t})}
+  const ix=rt.tree.find(x=>x.path==='index.html');if(ix)E.push({path:'viewer.html',sha:ix.sha});E.push({path:'index.html',text:HOME});
+  await commit(E,'Déplacement du carnet dans '+n,1);P=n+'/';S=[];await init();$('#st').textContent='Carnet déplacé. Patientez 1 à 3 minutes.'}
  catch(e){$('#st').textContent='Échec : '+e.message}}
 $('#mig').onclick=migrate;
 $('#al').onchange=async e=>{if(e.target.value==='+'){e.target.value=P;return newCarnet()}
