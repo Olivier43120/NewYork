@@ -1625,7 +1625,63 @@
    "name": "Troisième jour : à la sortie du Pont de Brooklyn, nous nous baladons dans le Sud de Manhattan pour rejoindre Wall Street",
    "desc": "",
    "mode": null,
-   "photos": []
+   "photos": [
+    {
+     "src": "Step13/img001.jpeg?v=3ce7cb1a",
+     "type": "image",
+     "thumb": "thumbs/Step13/img001.jpg?v=3ce7cb1a",
+     "med": "medium/Step13/img001.jpg?v=3ce7cb1a",
+     "text": "",
+     "mode": null,
+     "lat": 40.705850000000005,
+     "lng": -74.00142777777778,
+     "date": "2026-10-23T13:42:30.000Z"
+    },
+    {
+     "src": "Step13/img002.jpeg?v=c2fa1f17",
+     "type": "image",
+     "thumb": "thumbs/Step13/img002.jpg?v=c2fa1f17",
+     "med": "medium/Step13/img002.jpg?v=c2fa1f17",
+     "text": "",
+     "mode": null,
+     "lat": null,
+     "lng": null,
+     "date": "2026-10-23T14:24:23.000Z"
+    },
+    {
+     "src": "Step13/img003.jpeg?v=736f9d91",
+     "type": "image",
+     "thumb": "thumbs/Step13/img003.jpg?v=736f9d91",
+     "med": "medium/Step13/img003.jpg?v=736f9d91",
+     "text": "",
+     "mode": null,
+     "lat": 40.7049,
+     "lng": -74.00979722222222,
+     "date": "2026-10-23T14:26:06.000Z"
+    },
+    {
+     "src": "Step13/img004.jpeg?v=6a919fd8",
+     "type": "image",
+     "thumb": "thumbs/Step13/img004.jpg?v=6a919fd8",
+     "med": "medium/Step13/img004.jpg?v=6a919fd8",
+     "text": "",
+     "mode": null,
+     "lat": 40.70668333333334,
+     "lng": -74.01101666666666,
+     "date": "2026-10-23T14:32:29.000Z"
+    },
+    {
+     "src": "Step13/img005.jpeg?v=53c725a4",
+     "type": "image",
+     "thumb": "thumbs/Step13/img005.jpg?v=53c725a4",
+     "med": "medium/Step13/img005.jpg?v=53c725a4",
+     "text": "",
+     "mode": null,
+     "lat": 40.70673055555556,
+     "lng": -74.0109638888889,
+     "date": "2026-10-23T14:36:41.000Z"
+    }
+   ]
   }
  ]
 }
